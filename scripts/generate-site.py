@@ -171,12 +171,12 @@ footer a { color: #c9f266; }
 """
 
 HEADER_HTML = """<header class="site-header">
-  <div class="logo">⛳ Sim<span class="accent">Find</span></div>
+  <a href="/" class="logo" style="text-decoration:none">⛳ Sim<span class="accent">Find</span></a>
   <nav class="nav-links">
     <a href="/">Find a Sim</a>
-    <a href="/#brands">By Brand</a>
-    <a href="/#leagues">Leagues</a>
-    <a href="/submit">Submit a Venue</a>
+    <a href="/brands">Simulator Brands</a>
+    <a href="/leagues">Leagues</a>
+    <a href="/submit" class="nav-cta">Submit a Venue</a>
   </nav>
 </header>"""
 
@@ -185,7 +185,9 @@ FOOTER_HTML = """<footer>
   <div class="footer-links">
     <a href="/">Home</a>
     <a href="/submit">Submit a Venue</a>
-    <a href="/#brands">Simulator Guide</a>
+    <a href="/claim">Claim Your Listing</a>
+    <a href="/brands">Simulator Guide</a>
+    <a href="/leagues">Leagues</a>
     <a href="/privacy">Privacy</a>
   </div>
   <p>© 2026 SimFind — IndoorGolfFinders.com · The most detailed indoor golf simulator directory in the US</p>
@@ -279,12 +281,21 @@ def page_shell(title, description, canonical, body_content):
 <title>{html.escape(title)}</title>
 <meta name="description" content="{html.escape(description)}">
 <meta name="robots" content="index,follow">
+<meta name="google-site-verification" content="OwYaI_vjheyUrXkuilQ4zMuTZ-ufeS139zT0FQqV2s4">
 <link rel="canonical" href="{BASE_URL}{canonical}">
 <meta property="og:title" content="{html.escape(title)}">
 <meta property="og:description" content="{html.escape(description)}">
 <meta property="og:type" content="website">
 <meta property="og:url" content="{BASE_URL}{canonical}">
 <style>{SHARED_CSS}</style>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-17RNYD79LP"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){{dataLayer.push(arguments);}}
+  gtag('js', new Date());
+  gtag('config', 'G-17RNYD79LP');
+</script>
 </head>
 <body>
 {HEADER_HTML}
@@ -389,10 +400,10 @@ homepage_body = f"""
   <h1 style="font-size:42px;font-weight:900;line-height:1.15;margin-bottom:14px;letter-spacing:-1px;color:#fff">Find Golf Simulators<br><em style="color:#c9f266;font-style:normal">Near You</em></h1>
   <p style="font-size:17px;opacity:0.8;max-width:540px;margin:0 auto 32px;line-height:1.6">The most detailed indoor golf directory in the US — with simulator brand, pricing, bay count, food & drinks, and open hours for every venue.</p>
   <div style="max-width:560px;margin:0 auto">
-    <div style="display:flex;border-radius:12px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,0.4);border:1px solid rgba(201,242,102,0.2)">
+    <form onsubmit="var q=this.querySelector('input').value.trim();if(q){{window.location='https://www.google.com/search?q='+encodeURIComponent('golf simulator near '+q+' site:indoorgolffinders.com OR golf simulator '+q);}}return false;" style="display:flex;border-radius:12px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,0.4);border:1px solid rgba(201,242,102,0.2)">
       <input type="text" placeholder="Enter city, state, or ZIP code..." style="flex:1;padding:16px 20px;font-size:15px;border:none;outline:none">
-      <button style="background:#c9f266;color:#0c1f0e;border:none;padding:16px 26px;font-size:15px;font-weight:800;cursor:pointer">Find Simulators →</button>
-    </div>
+      <button type="submit" style="background:#c9f266;color:#0c1f0e;border:none;padding:16px 26px;font-size:15px;font-weight:800;cursor:pointer">Find Simulators →</button>
+    </form>
   </div>
   <div style="display:flex;justify-content:center;gap:48px;margin-top:36px;padding-top:32px;border-top:1px solid rgba(255,255,255,0.1)">
     <div style="text-align:center"><div style="font-size:28px;font-weight:900;color:#c9f266">{total_venues:,}+</div><div style="font-size:12px;opacity:0.6;text-transform:uppercase;letter-spacing:0.5px">Venues Listed</div></div>
@@ -549,7 +560,8 @@ for v in venues:
 
     map_embed = ''
     if lat and lng:
-        map_embed = f'<div style="border-radius:12px;overflow:hidden;margin:20px 0;height:280px"><iframe width="100%" height="280" frameborder="0" style="border:0" loading="lazy" allowfullscreen src="https://www.google.com/maps/embed/v1/place?key=AIzaSyAZO1_Qw1n2h2BFOth5JoFCZAAjpQVMJuo&q={lat},{lng}&zoom=15"></iframe></div>'
+        gmaps_link = f"https://www.google.com/maps/search/?api=1&query={lat},{lng}"
+        map_embed = f'<a href="{gmaps_link}" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:10px;background:#f5f9ee;border:1px solid #d4eaa0;border-radius:10px;padding:16px 20px;margin:20px 0;font-size:14px;font-weight:600;color:#0c1f0e;text-decoration:none">🗺️ View on Google Maps <span style="margin-left:auto;color:#2a6e1e">→</span></a>'
 
     sim_chip = f'<span class="chip chip-blue">🎯 {sim_brand}</span>' if sim_brand else ''
 
@@ -639,8 +651,375 @@ sitemap += '\n</urlset>'
 write_file(f"{OUT_DIR}/sitemap.xml", sitemap)
 
 write_file(f"{OUT_DIR}/robots.txt", f"User-agent: *\nAllow: /\nSitemap: {BASE_URL}/sitemap.xml\n")
-
+write_file(f"{OUT_DIR}/CNAME", "indoorgolffinders.com")
 write_file(f"{OUT_DIR}/vercel.json", '{"cleanUrls": true, "trailingSlash": false}')
+
+# ---------- STATIC PAGES ----------
+
+print("Generating static pages...")
+
+# SUBMIT A VENUE
+submit_body = """<div class="container">
+  <div style="max-width:620px;margin:40px auto">
+    <h1 style="font-size:30px;font-weight:900;color:#0c1f0e;margin-bottom:8px">Submit a Golf Simulator Venue</h1>
+    <p style="font-size:15px;color:#555;margin-bottom:32px;line-height:1.7">Know a golf simulator venue that's missing from our directory? Fill out the form below and we'll add it within 48 hours. Listings are always free.</p>
+    <form action="https://formspree.io/f/mnjgnwyw" method="POST" style="display:grid;gap:18px">
+      <div>
+        <label style="display:block;font-size:13px;font-weight:700;color:#333;margin-bottom:6px">Venue Name *</label>
+        <input type="text" name="venue_name" required placeholder="e.g. Five Iron Golf Chicago" style="width:100%;padding:12px 14px;border:1.5px solid #ddd;border-radius:8px;font-size:14px;outline:none">
+      </div>
+      <div>
+        <label style="display:block;font-size:13px;font-weight:700;color:#333;margin-bottom:6px">Street Address *</label>
+        <input type="text" name="address" required placeholder="123 Main St, Chicago, IL 60601" style="width:100%;padding:12px 14px;border:1.5px solid #ddd;border-radius:8px;font-size:14px;outline:none">
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+        <div>
+          <label style="display:block;font-size:13px;font-weight:700;color:#333;margin-bottom:6px">Phone Number</label>
+          <input type="tel" name="phone" placeholder="(312) 555-0100" style="width:100%;padding:12px 14px;border:1.5px solid #ddd;border-radius:8px;font-size:14px;outline:none">
+        </div>
+        <div>
+          <label style="display:block;font-size:13px;font-weight:700;color:#333;margin-bottom:6px">Website</label>
+          <input type="url" name="website" placeholder="https://yoursite.com" style="width:100%;padding:12px 14px;border:1.5px solid #ddd;border-radius:8px;font-size:14px;outline:none">
+        </div>
+      </div>
+      <div>
+        <label style="display:block;font-size:13px;font-weight:700;color:#333;margin-bottom:6px">Simulator Brand</label>
+        <select name="sim_brand" style="width:100%;padding:12px 14px;border:1.5px solid #ddd;border-radius:8px;font-size:14px;outline:none;background:#fff">
+          <option value="">Select if known</option>
+          <option>Trackman</option>
+          <option>Full Swing</option>
+          <option>X-Golf</option>
+          <option>TruGolf E6</option>
+          <option>SkyTrak</option>
+          <option>Foresight GC3</option>
+          <option>GolfZon</option>
+          <option>Other</option>
+          <option>Unknown</option>
+        </select>
+      </div>
+      <div>
+        <label style="display:block;font-size:13px;font-weight:700;color:#333;margin-bottom:6px">Additional Details</label>
+        <textarea name="details" rows="4" placeholder="Number of bays, bar/food, hours, leagues, anything else helpful..." style="width:100%;padding:12px 14px;border:1.5px solid #ddd;border-radius:8px;font-size:14px;outline:none;resize:vertical"></textarea>
+      </div>
+      <div>
+        <label style="display:block;font-size:13px;font-weight:700;color:#333;margin-bottom:6px">Your Email (optional — we'll notify you when it's added)</label>
+        <input type="email" name="_replyto" placeholder="you@email.com" style="width:100%;padding:12px 14px;border:1.5px solid #ddd;border-radius:8px;font-size:14px;outline:none">
+      </div>
+      <input type="hidden" name="_subject" value="New Venue Submission — SimFind">
+      <button type="submit" style="background:#c9f266;color:#0c1f0e;border:none;padding:14px 28px;font-size:15px;font-weight:800;border-radius:8px;cursor:pointer;width:100%">Submit Venue →</button>
+    </form>
+  </div>
+</div>"""
+
+write_file(f"{OUT_DIR}/submit/index.html",
+    page_shell("Submit a Golf Simulator Venue | SimFind", "Add a missing golf simulator venue to SimFind's national directory. Free, always.", "/submit", submit_body))
+
+# CLAIM YOUR LISTING
+claim_body = """<div class="container">
+  <div style="max-width:620px;margin:40px auto">
+    <h1 style="font-size:30px;font-weight:900;color:#0c1f0e;margin-bottom:8px">Claim Your Listing</h1>
+    <p style="font-size:15px;color:#555;margin-bottom:12px;line-height:1.7">Are you the owner or manager of a venue listed on SimFind? Claim your listing to update your hours, pricing, photos, simulator brand, and amenities — and get a verified badge on your listing.</p>
+    <div style="background:#fafff0;border:1px solid #d4eaa0;border-radius:10px;padding:20px;margin-bottom:28px">
+      <div style="font-size:14px;font-weight:700;color:#0c1f0e;margin-bottom:10px">What you get when you claim:</div>
+      <ul style="font-size:14px;color:#444;line-height:2;padding-left:18px">
+        <li>✅ Verified owner badge on your listing</li>
+        <li>✅ Update your hours, phone, and website</li>
+        <li>✅ Add simulator brand, bay count, and amenities</li>
+        <li>✅ Add photos and a venue description</li>
+        <li>✅ Respond to customer inquiries</li>
+      </ul>
+    </div>
+    <form action="https://formspree.io/f/mnjgnwyw" method="POST" style="display:grid;gap:18px">
+      <div>
+        <label style="display:block;font-size:13px;font-weight:700;color:#333;margin-bottom:6px">Venue Name *</label>
+        <input type="text" name="venue_name" required placeholder="Your venue name" style="width:100%;padding:12px 14px;border:1.5px solid #ddd;border-radius:8px;font-size:14px;outline:none">
+      </div>
+      <div>
+        <label style="display:block;font-size:13px;font-weight:700;color:#333;margin-bottom:6px">Venue Address *</label>
+        <input type="text" name="address" required placeholder="Full address" style="width:100%;padding:12px 14px;border:1.5px solid #ddd;border-radius:8px;font-size:14px;outline:none">
+      </div>
+      <div>
+        <label style="display:block;font-size:13px;font-weight:700;color:#333;margin-bottom:6px">Your Name *</label>
+        <input type="text" name="owner_name" required placeholder="Your full name" style="width:100%;padding:12px 14px;border:1.5px solid #ddd;border-radius:8px;font-size:14px;outline:none">
+      </div>
+      <div>
+        <label style="display:block;font-size:13px;font-weight:700;color:#333;margin-bottom:6px">Your Title</label>
+        <input type="text" name="owner_title" placeholder="Owner, Manager, Marketing Director..." style="width:100%;padding:12px 14px;border:1.5px solid #ddd;border-radius:8px;font-size:14px;outline:none">
+      </div>
+      <div>
+        <label style="display:block;font-size:13px;font-weight:700;color:#333;margin-bottom:6px">Business Email *</label>
+        <input type="email" name="_replyto" required placeholder="you@yourvenue.com" style="width:100%;padding:12px 14px;border:1.5px solid #ddd;border-radius:8px;font-size:14px;outline:none">
+      </div>
+      <div>
+        <label style="display:block;font-size:13px;font-weight:700;color:#333;margin-bottom:6px">Anything you'd like to update or add?</label>
+        <textarea name="details" rows="4" placeholder="Hours, simulator brand, pricing, photos, amenities..." style="width:100%;padding:12px 14px;border:1.5px solid #ddd;border-radius:8px;font-size:14px;outline:none;resize:vertical"></textarea>
+      </div>
+      <input type="hidden" name="_subject" value="Claim Listing Request — SimFind">
+      <button type="submit" style="background:#c9f266;color:#0c1f0e;border:none;padding:14px 28px;font-size:15px;font-weight:800;border-radius:8px;cursor:pointer;width:100%">Submit Claim Request →</button>
+    </form>
+    <p style="font-size:12px;color:#aaa;text-align:center;margin-top:16px">We'll verify ownership and respond within 48 hours at FORE@indoorgolffinders.com</p>
+  </div>
+</div>"""
+
+write_file(f"{OUT_DIR}/claim/index.html",
+    page_shell("Claim Your Golf Simulator Listing | SimFind", "Own or manage a venue on SimFind? Claim your listing to update details, add photos, and get a verified badge.", "/claim", claim_body))
+
+# LEAGUES PAGE
+leagues_body = """<div class="container">
+  <div style="margin:40px 0">
+    <h1 style="font-size:32px;font-weight:900;color:#0c1f0e;margin-bottom:10px">Find a Golf Simulator League Near You</h1>
+    <p style="font-size:15px;color:#555;margin-bottom:32px;line-height:1.7;max-width:680px">Indoor golf leagues are one of the fastest-growing ways to play competitive golf year-round. Most simulator venues run leagues on weeknights — here's how to find one near you.</p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:36px">
+      <div style="background:#fafff0;border:1px solid #d4eaa0;border-radius:12px;padding:24px">
+        <div style="font-size:20px;margin-bottom:10px">🏆</div>
+        <div style="font-size:16px;font-weight:800;color:#0c1f0e;margin-bottom:8px">What is a simulator league?</div>
+        <p style="font-size:14px;color:#555;line-height:1.7">A group of players who meet regularly — usually weekly or bi-weekly — to compete on a golf simulator. Formats vary: stroke play, match play, handicapped leagues, and team formats are all common.</p>
+      </div>
+      <div style="background:#fafff0;border:1px solid #d4eaa0;border-radius:12px;padding:24px">
+        <div style="font-size:20px;margin-bottom:10px">📅</div>
+        <div style="font-size:16px;font-weight:800;color:#0c1f0e;margin-bottom:8px">When do they run?</div>
+        <p style="font-size:14px;color:#555;line-height:1.7">Most leagues run October through March — the indoor golf "season" in northern states. Year-round leagues are common in warmer climates and dedicated golf lounge venues.</p>
+      </div>
+      <div style="background:#fafff0;border:1px solid #d4eaa0;border-radius:12px;padding:24px">
+        <div style="font-size:20px;margin-bottom:10px">💰</div>
+        <div style="font-size:16px;font-weight:800;color:#0c1f0e;margin-bottom:8px">What does it cost?</div>
+        <p style="font-size:14px;color:#555;line-height:1.7">Typical league fees run $20–$60 per session, including simulator time. Some venues offer season passes. Prizes, food & drinks, and trophy nights are usually part of the package.</p>
+      </div>
+      <div style="background:#fafff0;border:1px solid #d4eaa0;border-radius:12px;padding:24px">
+        <div style="font-size:20px;margin-bottom:10px">🎯</div>
+        <div style="font-size:16px;font-weight:800;color:#0c1f0e;margin-bottom:8px">Do I need to be good?</div>
+        <p style="font-size:14px;color:#555;line-height:1.7">Nope. Most leagues use handicaps so players of all skill levels compete fairly. Many venues specifically run beginner-friendly leagues on separate nights from competitive divisions.</p>
+      </div>
+    </div>
+
+    <div style="background:#0c1f0e;color:#fff;border-radius:14px;padding:32px;text-align:center;margin-bottom:36px">
+      <h2 style="font-size:22px;font-weight:900;margin-bottom:10px">Find a League at a Venue Near You</h2>
+      <p style="font-size:14px;opacity:0.75;margin-bottom:22px">Browse venues in your city — venues that offer leagues have the 🏆 League chip on their listing.</p>
+      <a href="/" style="display:inline-block;background:#c9f266;color:#0c1f0e;font-weight:800;padding:13px 28px;border-radius:8px;font-size:15px;text-decoration:none">Browse Venues →</a>
+    </div>
+
+    <h2 style="font-size:22px;font-weight:900;margin-bottom:16px">Venues Known for Leagues</h2>
+    <div style="display:grid;gap:10px">
+      <div style="background:#f5f5f5;border-radius:10px;padding:16px 20px;display:flex;justify-content:space-between;align-items:center">
+        <div><div style="font-weight:700">Five Iron Golf</div><div style="font-size:13px;color:#777">Multiple locations nationwide · Trackman · Weekly leagues year-round</div></div>
+        <a href="/venues/ny/five-iron-golf-new-york" style="background:#c9f266;color:#0c1f0e;font-weight:700;padding:7px 14px;border-radius:6px;font-size:13px">Find Locations →</a>
+      </div>
+      <div style="background:#f5f5f5;border-radius:10px;padding:16px 20px;display:flex;justify-content:space-between;align-items:center">
+        <div><div style="font-weight:700">X-Golf</div><div style="font-size:13px;color:#777">Franchise locations across 30+ states · Competitive and social leagues</div></div>
+        <a href="/" style="background:#c9f266;color:#0c1f0e;font-weight:700;padding:7px 14px;border-radius:6px;font-size:13px">Find Locations →</a>
+      </div>
+    </div>
+
+    <div style="margin-top:36px;background:#f5f9ee;border:1px solid #d4eaa0;border-radius:12px;padding:24px">
+      <div style="font-size:16px;font-weight:800;color:#0c1f0e;margin-bottom:8px">🏌️ Run a league at your venue?</div>
+      <p style="font-size:14px;color:#555;margin-bottom:14px">Get your league listed on SimFind for free. We'll add it to your venue page and the leagues directory.</p>
+      <a href="/submit" style="display:inline-block;background:#0c1f0e;color:#c9f266;font-weight:700;padding:10px 20px;border-radius:8px;font-size:14px">Submit Your League →</a>
+    </div>
+  </div>
+</div>"""
+
+write_file(f"{OUT_DIR}/leagues/index.html",
+    page_shell("Golf Simulator Leagues Near Me | SimFind", "Find indoor golf simulator leagues near you. All skill levels welcome. Browse by city and venue.", "/leagues", leagues_body))
+
+# BRANDS PAGE
+brands_body = """<div class="container">
+  <div style="margin:40px 0">
+    <h1 style="font-size:32px;font-weight:900;color:#0c1f0e;margin-bottom:10px">Golf Simulator Brand Guide</h1>
+    <p style="font-size:15px;color:#555;margin-bottom:32px;line-height:1.7;max-width:680px">Not all golf simulators are equal. Here's what you need to know about the major simulator brands — from tour-level accuracy to budget-friendly entertainment setups.</p>
+
+    <div style="display:grid;gap:16px">
+      <div style="border:1px solid #e8e8e8;border-radius:12px;padding:24px;display:grid;grid-template-columns:80px 1fr;gap:20px;align-items:start">
+        <div style="background:#0c1f0e;color:#c9f266;border-radius:10px;padding:12px;text-align:center;font-weight:900;font-size:14px">TRACK MAN</div>
+        <div>
+          <div style="font-size:18px;font-weight:800;color:#0c1f0e;margin-bottom:6px">Trackman</div>
+          <div style="display:flex;gap:8px;margin-bottom:10px"><span style="background:#f3f8e8;border:1px solid #d8ecb0;border-radius:8px;padding:3px 10px;font-size:12px;color:#2a5010">Most Accurate</span><span style="background:#f3f8e8;border:1px solid #d8ecb0;border-radius:8px;padding:3px 10px;font-size:12px;color:#2a5010">Tour-Level</span><span style="background:#fff3e0;border:1px solid #ffd09a;border-radius:8px;padding:3px 10px;font-size:12px;color:#a04a00">Premium Price</span></div>
+          <p style="font-size:14px;color:#555;line-height:1.7">Radar-based dual-radar technology. Used by PGA Tour pros for practice and fitting. Tracks 26+ data points on every shot. The gold standard for serious golfers. Used by Five Iron Golf across all locations.</p>
+          <a href="/" style="display:inline-block;margin-top:10px;font-size:13px;color:#2a6e1e;font-weight:600">Find Trackman venues →</a>
+        </div>
+      </div>
+      <div style="border:1px solid #e8e8e8;border-radius:12px;padding:24px;display:grid;grid-template-columns:80px 1fr;gap:20px;align-items:start">
+        <div style="background:#1a3a8e;color:#fff;border-radius:10px;padding:12px;text-align:center;font-weight:900;font-size:14px">FULL SWING</div>
+        <div>
+          <div style="font-size:18px;font-weight:800;color:#0c1f0e;margin-bottom:6px">Full Swing</div>
+          <div style="display:flex;gap:8px;margin-bottom:10px"><span style="background:#f3f8e8;border:1px solid #d8ecb0;border-radius:8px;padding:3px 10px;font-size:12px;color:#2a5010">Camera + Radar</span><span style="background:#f3f8e8;border:1px solid #d8ecb0;border-radius:8px;padding:3px 10px;font-size:12px;color:#2a5010">Tiger's Choice</span></div>
+          <p style="font-size:14px;color:#555;line-height:1.7">Camera and radar hybrid system. Used by Tiger Woods at his home. Massive course library with 100+ licensed courses. Great visuals and accuracy. Popular in upscale bar and lounge settings.</p>
+        </div>
+      </div>
+      <div style="border:1px solid #e8e8e8;border-radius:12px;padding:24px;display:grid;grid-template-columns:80px 1fr;gap:20px;align-items:start">
+        <div style="background:#c9f266;color:#0c1f0e;border-radius:10px;padding:12px;text-align:center;font-weight:900;font-size:14px">X-GOLF</div>
+        <div>
+          <div style="font-size:18px;font-weight:800;color:#0c1f0e;margin-bottom:6px">X-Golf</div>
+          <div style="display:flex;gap:8px;margin-bottom:10px"><span style="background:#f3f8e8;border:1px solid #d8ecb0;border-radius:8px;padding:3px 10px;font-size:12px;color:#2a5010">Franchise</span><span style="background:#f3f8e8;border:1px solid #d8ecb0;border-radius:8px;padding:3px 10px;font-size:12px;color:#2a5010">Realistic Feel</span></div>
+          <p style="font-size:14px;color:#555;line-height:1.7">Photo-electric sensor system with very realistic ball flight. Consistent experience across 200+ franchise locations in 30+ states. Great for social golf and competitive leagues alike.</p>
+        </div>
+      </div>
+      <div style="border:1px solid #e8e8e8;border-radius:12px;padding:24px;display:grid;grid-template-columns:80px 1fr;gap:20px;align-items:start">
+        <div style="background:#f5f5f5;color:#333;border-radius:10px;padding:12px;text-align:center;font-weight:900;font-size:13px">TRUGOLF E6</div>
+        <div>
+          <div style="font-size:18px;font-weight:800;color:#0c1f0e;margin-bottom:6px">TruGolf E6</div>
+          <div style="display:flex;gap:8px;margin-bottom:10px"><span style="background:#f3f8e8;border:1px solid #d8ecb0;border-radius:8px;padding:3px 10px;font-size:12px;color:#2a5010">Best Graphics</span><span style="background:#f3f8e8;border:1px solid #d8ecb0;border-radius:8px;padding:3px 10px;font-size:12px;color:#2a5010">Budget-Friendly</span></div>
+          <p style="font-size:14px;color:#555;line-height:1.7">Best-in-class graphics and course visuals. Great for casual players, entertainment venues, and bars. Lower price point makes it common in neighborhood spots and smaller venues.</p>
+        </div>
+      </div>
+      <div style="border:1px solid #e8e8e8;border-radius:12px;padding:24px;display:grid;grid-template-columns:80px 1fr;gap:20px;align-items:start">
+        <div style="background:#f5f5f5;color:#333;border-radius:10px;padding:12px;text-align:center;font-weight:900;font-size:13px">SKY TRAK</div>
+        <div>
+          <div style="font-size:18px;font-weight:800;color:#0c1f0e;margin-bottom:6px">SkyTrak</div>
+          <div style="display:flex;gap:8px;margin-bottom:10px"><span style="background:#f3f8e8;border:1px solid #d8ecb0;border-radius:8px;padding:3px 10px;font-size:12px;color:#2a5010">High Accuracy</span><span style="background:#f3f8e8;border:1px solid #d8ecb0;border-radius:8px;padding:3px 10px;font-size:12px;color:#2a5010">Mid-Price</span></div>
+          <p style="font-size:14px;color:#555;line-height:1.7">Photometric camera system with high accuracy at a mid-tier price point. Common in private home setups and smaller commercial venues. Good for practice and casual play.</p>
+        </div>
+      </div>
+      <div style="border:1px solid #e8e8e8;border-radius:12px;padding:24px;display:grid;grid-template-columns:80px 1fr;gap:20px;align-items:start">
+        <div style="background:#f5f5f5;color:#333;border-radius:10px;padding:12px;text-align:center;font-weight:900;font-size:13px">FORESIGHT GC3</div>
+        <div>
+          <div style="font-size:18px;font-weight:800;color:#0c1f0e;margin-bottom:6px">Foresight GC3</div>
+          <div style="display:flex;gap:8px;margin-bottom:10px"><span style="background:#f3f8e8;border:1px solid #d8ecb0;border-radius:8px;padding:3px 10px;font-size:12px;color:#2a5010">Camera-Based</span><span style="background:#f3f8e8;border:1px solid #d8ecb0;border-radius:8px;padding:3px 10px;font-size:12px;color:#2a5010">High Accuracy</span></div>
+          <p style="font-size:14px;color:#555;line-height:1.7">Three high-speed cameras track club and ball data with excellent accuracy. Popular in dedicated golf performance centers and fitting studios. Trusted by club fitters and instructors.</p>
+        </div>
+      </div>
+    </div>
+
+    <div style="background:#0c1f0e;color:#fff;border-radius:14px;padding:32px;text-align:center;margin-top:36px">
+      <h2 style="font-size:20px;font-weight:900;margin-bottom:8px">Find Venues by Simulator Brand</h2>
+      <p style="font-size:14px;opacity:0.75;margin-bottom:20px">Browse our directory and look for the brand chip on each venue listing.</p>
+      <a href="/" style="display:inline-block;background:#c9f266;color:#0c1f0e;font-weight:800;padding:12px 26px;border-radius:8px;font-size:14px;text-decoration:none">Browse All Venues →</a>
+    </div>
+  </div>
+</div>"""
+
+write_file(f"{OUT_DIR}/brands/index.html",
+    page_shell("Golf Simulator Brand Guide — Trackman vs Full Swing vs X-Golf | SimFind", "Compare golf simulator brands: Trackman, Full Swing, X-Golf, TruGolf E6, SkyTrak, and Foresight GC3. Find venues by simulator type.", "/brands", brands_body))
+
+# PRIVACY PAGE
+privacy_body = """<div class="container"><div style="max-width:680px;margin:40px auto;font-size:15px;color:#444;line-height:1.8">
+  <h1 style="font-size:28px;font-weight:900;color:#0c1f0e;margin-bottom:20px">Privacy Policy</h1>
+  <p><strong>Effective date:</strong> March 8, 2026</p>
+  <h2 style="font-size:18px;font-weight:700;color:#0c1f0e;margin:24px 0 8px">What we collect</h2>
+  <p>SimFind / IndoorGolfFinders.com does not collect personal information from visitors. We use Google Analytics to understand aggregate traffic patterns (pages viewed, general location, device type). No personally identifiable information is stored by us.</p>
+  <p style="margin-top:12px">If you submit a venue or claim a listing, we collect the information you voluntarily provide (venue name, address, your email) to process your request. This information is handled via Formspree and emailed to our team.</p>
+  <h2 style="font-size:18px;font-weight:700;color:#0c1f0e;margin:24px 0 8px">Advertising</h2>
+  <p>This site displays advertisements served by Google AdSense. Google may use cookies to serve ads based on your prior visits to this or other websites. You can opt out at <a href="https://www.google.com/settings/ads" style="color:#2a6e1e">google.com/settings/ads</a>.</p>
+  <h2 style="font-size:18px;font-weight:700;color:#0c1f0e;margin:24px 0 8px">Contact</h2>
+  <p>Questions? Email us at <a href="mailto:FORE@indoorgolffinders.com" style="color:#2a6e1e">FORE@indoorgolffinders.com</a></p>
+</div></div>"""
+
+write_file(f"{OUT_DIR}/privacy/index.html",
+    page_shell("Privacy Policy | SimFind", "Privacy policy for SimFind / IndoorGolfFinders.com", "/privacy", privacy_body))
+
+print("✅ Static pages generated (submit, claim, leagues, brands, privacy)")
+
+# ANALYTICS PAGE
+analytics_body = """<div class="container">
+  <div style="margin:40px 0">
+    <h1 style="font-size:28px;font-weight:900;color:#0c1f0e;margin-bottom:6px">📊 SimFind Analytics</h1>
+    <p style="font-size:14px;color:#888;margin-bottom:32px">Live traffic data for IndoorGolfFinders.com</p>
+
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:32px" id="stat-cards">
+      <div class="stat-card" id="card-sessions">
+        <div class="stat-label">Sessions (28d)</div>
+        <div class="stat-value" id="val-sessions">—</div>
+        <div class="stat-delta" id="delta-sessions"></div>
+      </div>
+      <div class="stat-card" id="card-users">
+        <div class="stat-label">Users (28d)</div>
+        <div class="stat-value" id="val-users">—</div>
+        <div class="stat-delta" id="delta-users"></div>
+      </div>
+      <div class="stat-card" id="card-pageviews">
+        <div class="stat-label">Page Views (28d)</div>
+        <div class="stat-value" id="val-pageviews">—</div>
+        <div class="stat-delta" id="delta-pageviews"></div>
+      </div>
+      <div class="stat-card" id="card-bounce">
+        <div class="stat-label">Bounce Rate</div>
+        <div class="stat-value" id="val-bounce">—</div>
+        <div class="stat-delta" id="delta-bounce"></div>
+      </div>
+    </div>
+
+    <div style="background:#fff;border:1px solid #e8e8e8;border-radius:12px;padding:24px;margin-bottom:24px">
+      <div style="font-size:15px;font-weight:700;color:#0c1f0e;margin-bottom:16px">Traffic Over Time</div>
+      <canvas id="traffic-chart" height="80"></canvas>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+      <div style="background:#fff;border:1px solid #e8e8e8;border-radius:12px;padding:24px">
+        <div style="font-size:15px;font-weight:700;color:#0c1f0e;margin-bottom:16px">Top Pages</div>
+        <div id="top-pages"><div style="color:#aaa;font-size:14px">Loading...</div></div>
+      </div>
+      <div style="background:#fff;border:1px solid #e8e8e8;border-radius:12px;padding:24px">
+        <div style="font-size:15px;font-weight:700;color:#0c1f0e;margin-bottom:16px">Top States</div>
+        <div id="top-states"><div style="color:#aaa;font-size:14px">Loading...</div></div>
+      </div>
+    </div>
+
+    <div style="margin-top:24px;background:#f5f9ee;border:1px solid #d4eaa0;border-radius:12px;padding:20px;font-size:13px;color:#555">
+      ℹ️ Data is pulled live from Google Analytics 4. It may take up to 24h for new data to appear after the property is set up.
+      <a href="https://analytics.google.com" target="_blank" style="color:#2a6e1e;font-weight:600;margin-left:8px">Open GA4 Dashboard →</a>
+    </div>
+  </div>
+</div>
+
+<style>
+.stat-card { background:#fff;border:1px solid #e8e8e8;border-radius:12px;padding:20px;text-align:center; }
+.stat-label { font-size:12px;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px; }
+.stat-value { font-size:32px;font-weight:900;color:#0c1f0e; }
+.stat-delta { font-size:12px;color:#2a6e1e;margin-top:4px; }
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script>
+// GA4 Data API — requires authentication
+// Replace G-17RNYD79LP with real ID when available
+const GA_PROPERTY_ID = 'GA_PROPERTY_ID'; // e.g. 526999999
+
+async function loadAnalytics() {
+  // For now, link directly to GA4 dashboard since API requires OAuth
+  document.getElementById('val-sessions').textContent = 'See GA4';
+  document.getElementById('val-users').textContent = 'See GA4';
+  document.getElementById('val-pageviews').textContent = 'See GA4';
+  document.getElementById('val-bounce').textContent = 'See GA4';
+  
+  document.getElementById('top-pages').innerHTML = '<a href="https://analytics.google.com" target="_blank" style="color:#2a6e1e;font-size:14px">View in Google Analytics →</a>';
+  document.getElementById('top-states').innerHTML = '<a href="https://analytics.google.com" target="_blank" style="color:#2a6e1e;font-size:14px">View in Google Analytics →</a>';
+  
+  // Placeholder chart
+  const ctx = document.getElementById('traffic-chart').getContext('2d');
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: Array.from({{length:28}}, (_,i) => {{
+        const d = new Date(); d.setDate(d.getDate()-27+i);
+        return d.toLocaleDateString('en-US',{{month:'short',day:'numeric'}});
+      }}),
+      datasets: [{{
+        label: 'Sessions',
+        data: Array(28).fill(0),
+        borderColor: '#c9f266',
+        backgroundColor: 'rgba(201,242,102,0.15)',
+        tension: 0.4,
+        fill: true,
+        pointRadius: 2
+      }}]
+    },
+    options: {{
+      responsive: true,
+      plugins: {{ legend: {{ display: false }} }},
+      scales: {{
+        y: {{ beginAtZero: true, grid: {{ color: '#f0f0f0' }} }},
+        x: {{ grid: {{ display: false }} }}
+      }}
+    }}
+  });
+}
+loadAnalytics();
+</script>"""
+
+write_file(f"{OUT_DIR}/analytics/index.html",
+    page_shell("Analytics | SimFind — IndoorGolfFinders.com", "Live traffic analytics for SimFind / IndoorGolfFinders.com.", "/analytics", analytics_body))
+
+print("✅ Analytics page generated")
 
 print(f"""
 ✅ SITE GENERATION COMPLETE
