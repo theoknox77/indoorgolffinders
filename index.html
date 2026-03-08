@@ -77,12 +77,12 @@ footer a { color: #c9f266; }
 </head>
 <body>
 <header class="site-header">
-  <div class="logo">⛳ Sim<span class="accent">Find</span></div>
+  <a href="/" class="logo" style="text-decoration:none">⛳ Sim<span class="accent">Find</span></a>
   <nav class="nav-links">
     <a href="/">Find a Sim</a>
-    <a href="/#brands">By Brand</a>
-    <a href="/#leagues">Leagues</a>
-    <a href="/submit">Submit a Venue</a>
+    <a href="/brands">Simulator Brands</a>
+    <a href="/leagues">Leagues</a>
+    <a href="/submit" class="nav-cta">Submit a Venue</a>
   </nav>
 </header>
 <div class="ad-slot"><!-- ADSENSE_SLOT_TOP --> Advertisement</div>
@@ -92,10 +92,10 @@ footer a { color: #c9f266; }
   <h1 style="font-size:42px;font-weight:900;line-height:1.15;margin-bottom:14px;letter-spacing:-1px;color:#fff">Find Golf Simulators<br><em style="color:#c9f266;font-style:normal">Near You</em></h1>
   <p style="font-size:17px;opacity:0.8;max-width:540px;margin:0 auto 32px;line-height:1.6">The most detailed indoor golf directory in the US — with simulator brand, pricing, bay count, food & drinks, and open hours for every venue.</p>
   <div style="max-width:560px;margin:0 auto">
-    <div style="display:flex;border-radius:12px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,0.4);border:1px solid rgba(201,242,102,0.2)">
+    <form onsubmit="var q=this.querySelector('input').value.trim();if(q){window.location='https://www.google.com/search?q='+encodeURIComponent('golf simulator near '+q+' site:indoorgolffinders.com OR golf simulator '+q);}return false;" style="display:flex;border-radius:12px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,0.4);border:1px solid rgba(201,242,102,0.2)">
       <input type="text" placeholder="Enter city, state, or ZIP code..." style="flex:1;padding:16px 20px;font-size:15px;border:none;outline:none">
-      <button style="background:#c9f266;color:#0c1f0e;border:none;padding:16px 26px;font-size:15px;font-weight:800;cursor:pointer">Find Simulators →</button>
-    </div>
+      <button type="submit" style="background:#c9f266;color:#0c1f0e;border:none;padding:16px 26px;font-size:15px;font-weight:800;cursor:pointer">Find Simulators →</button>
+    </form>
   </div>
   <div style="display:flex;justify-content:center;gap:48px;margin-top:36px;padding-top:32px;border-top:1px solid rgba(255,255,255,0.1)">
     <div style="text-align:center"><div style="font-size:28px;font-weight:900;color:#c9f266">2,406+</div><div style="font-size:12px;opacity:0.6;text-transform:uppercase;letter-spacing:0.5px">Venues Listed</div></div>
@@ -642,7 +642,9 @@ footer a { color: #c9f266; }
   <div class="footer-links">
     <a href="/">Home</a>
     <a href="/submit">Submit a Venue</a>
-    <a href="/#brands">Simulator Guide</a>
+    <a href="/claim">Claim Your Listing</a>
+    <a href="/brands">Simulator Guide</a>
+    <a href="/leagues">Leagues</a>
     <a href="/privacy">Privacy</a>
   </div>
   <p>© 2026 SimFind — IndoorGolfFinders.com · The most detailed indoor golf simulator directory in the US</p>
