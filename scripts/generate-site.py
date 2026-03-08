@@ -288,6 +288,7 @@ def page_shell(title, description, canonical, body_content):
 <meta property="og:type" content="website">
 <meta property="og:url" content="{BASE_URL}{canonical}">
 <style>{SHARED_CSS}</style>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7066928956398194" crossorigin="anonymous"></script>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-17RNYD79LP"></script>
 <script>
