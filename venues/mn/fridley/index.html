@@ -74,6 +74,28 @@ footer a { color: #c9f266; }
 .toc-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 3px 20px; }
 .toc-grid a { color: #2a6e1e; font-size: 13px; line-height: 2.1; }
 .toc-grid a:hover { text-decoration: underline; }
+
+@media (max-width: 640px) {
+  .site-header { padding: 12px 16px; }
+  .nav-links { display: none; }
+  .nav-mobile-cta { display: inline-block !important; }
+  .logo { font-size: 18px; }
+  .container { padding: 0 14px; }
+  .venue-card { grid-template-columns: 36px 1fr; gap: 0 12px; padding: 14px; }
+  .venue-actions { grid-column: 1 / -1; flex-direction: row; align-items: center; justify-content: space-between; min-width: unset; margin-top: 10px; padding-top: 10px; border-top: 1px solid #eee; }
+  .price-tag, .price-sub { text-align: left; }
+  .venue-name { font-size: 15px; }
+  .section-header h2 { font-size: 20px; }
+  .toc-grid { grid-template-columns: 1fr 1fr; gap: 2px 12px; }
+  .cta-box { padding: 22px 18px; }
+  .cta-box h3 { font-size: 18px; }
+  .hero-stats-row { flex-direction: column !important; gap: 20px !important; }
+  .hero-search-form input { font-size: 14px !important; padding: 13px 14px !important; }
+  .hero-title { font-size: 30px !important; }
+  .states-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
+  .brands-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)) !important; }
+  h1 { font-size: 22px !important; }
+}
 </style>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7066928956398194" crossorigin="anonymous"></script>
 <!-- Google tag (gtag.js) -->
