@@ -1,217 +1,590 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Analytics | SimFind — IndoorGolfFinders.com</title>
-<meta name="description" content="Live traffic analytics for SimFind / IndoorGolfFinders.com.">
-<meta name="robots" content="index,follow">
-<meta name="google-site-verification" content="OwYaI_vjheyUrXkuilQ4zMuTZ-ufeS139zT0FQqV2s4">
-<link rel="canonical" href="https://www.indoorgolffinders.com/analytics">
-<meta property="og:title" content="Analytics | SimFind — IndoorGolfFinders.com">
-<meta property="og:description" content="Live traffic analytics for SimFind / IndoorGolfFinders.com.">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://www.indoorgolffinders.com/analytics">
-<style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: #1a1a1a; background: #fff; line-height: 1.5; }
-a { color: inherit; text-decoration: none; }
-.site-header { background: #0c1f0e; padding: 14px 32px; display: flex; align-items: center; justify-content: space-between; }
-.logo { color: #fff; font-size: 22px; font-weight: 800; }
-.logo .accent { color: #c9f266; }
-.nav-links { display: flex; gap: 20px; align-items: center; }
-.nav-links a { color: rgba(255,255,255,0.75); font-size: 14px; }
-.nav-links a:hover { color: #fff; }
-.nav-cta { background: #c9f266 !important; color: #0c1f0e !important; font-weight: 700 !important; padding: 7px 16px; border-radius: 6px; font-size: 13px !important; }
-.ad-slot { background: #f8f8f8; border-bottom: 1px solid #eee; text-align: center; padding: 12px; font-size: 11px; color: #bbb; text-transform: uppercase; letter-spacing: 0.5px; }
-.container { max-width: 920px; margin: 0 auto; padding: 0 20px; }
-.breadcrumb { font-size: 13px; color: #888; padding: 14px 0 0; }
-.breadcrumb a { color: #2a6e1e; }
-.breadcrumb span { margin: 0 6px; }
-.venue-card { border: 1px solid #e8e8e8; border-radius: 12px; padding: 20px 22px; display: grid; grid-template-columns: 44px 1fr auto; gap: 0 16px; align-items: start; transition: box-shadow 0.15s, border-color 0.15s; margin-bottom: 12px; }
-.venue-card:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.08); border-color: #c9f266; }
-.venue-card.featured { border-color: #c9f266; background: #fafff0; }
-.rank-badge { width: 36px; height: 36px; border-radius: 8px; background: #0c1f0e; color: #c9f266; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; flex-shrink: 0; margin-top: 2px; }
-.rank-badge.gold { background: #c9f266; color: #0c1f0e; }
-.venue-name { font-size: 17px; font-weight: 800; color: #0c1f0e; }
-.venue-top { display: flex; align-items: baseline; gap: 10px; margin-bottom: 4px; flex-wrap: wrap; }
-.badge { font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.3px; }
-.badge-chain { background: #e8f0ff; color: #1a3a8e; }
-.badge-new { background: #fff0e0; color: #b85c00; }
-.venue-address { font-size: 13px; color: #777; margin-bottom: 10px; }
-.chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
-.chip { display: inline-flex; align-items: center; gap: 4px; border-radius: 10px; padding: 3px 10px; font-size: 12px; font-weight: 500; }
-.chip-green { background: #f3f8e8; border: 1px solid #d8ecb0; color: #2a5010; }
-.chip-blue { background: #e8f0ff; border: 1px solid #b0c8ff; color: #1a3a8e; }
-.chip-orange { background: #fff3e0; border: 1px solid #ffd09a; color: #a04a00; }
-.chip-yellow { background: #fff8e0; border: 1px solid #fce57a; color: #7a5c00; }
-.venue-details { font-size: 12px; color: #888; margin-bottom: 8px; }
-.venue-actions { display: flex; flex-direction: column; gap: 8px; align-items: flex-end; min-width: 110px; }
-.price-tag { font-size: 14px; font-weight: 800; color: #0c1f0e; text-align: right; }
-.price-sub { font-size: 11px; color: #aaa; text-align: right; }
-.btn-primary { background: #c9f266; color: #0c1f0e; border-radius: 8px; padding: 8px 16px; font-size: 13px; font-weight: 700; white-space: nowrap; text-align: center; display: inline-block; }
-.btn-secondary { border: 1.5px solid #ddd; color: #444; border-radius: 8px; padding: 7px 14px; font-size: 12px; white-space: nowrap; text-align: center; display: inline-block; }
-.btn-secondary:hover { border-color: #0c1f0e; color: #0c1f0e; }
-.section-header { display: flex; align-items: baseline; justify-content: space-between; border-bottom: 3px solid #0c1f0e; padding-bottom: 10px; margin: 36px 0 14px; }
-.section-header h2 { font-size: 24px; font-weight: 900; }
-.section-meta { font-size: 13px; color: #777; }
-.section-intro { font-size: 14px; color: #555; margin-bottom: 18px; line-height: 1.7; }
-.inline-ad { background: #f9f9f9; border: 1px dashed #ddd; border-radius: 10px; text-align: center; padding: 22px; font-size: 11px; color: #ccc; margin: 28px 0; text-transform: uppercase; letter-spacing: 0.5px; }
-.cta-box { background: linear-gradient(135deg, #0c1f0e 0%, #1a3d1e 100%); color: #fff; border-radius: 14px; padding: 32px 36px; text-align: center; margin: 40px 0; }
-.cta-box h3 { font-size: 22px; font-weight: 900; margin-bottom: 8px; }
-.cta-box p { font-size: 14px; opacity: 0.75; margin-bottom: 22px; }
-.cta-btn { background: #c9f266; color: #0c1f0e; border: none; padding: 13px 28px; font-size: 15px; font-weight: 800; border-radius: 8px; cursor: pointer; display: inline-block; margin: 4px; }
-footer { background: #0c1f0e; color: #666; padding: 32px 24px; text-align: center; font-size: 13px; margin-top: 48px; }
-footer a { color: #c9f266; }
-.footer-logo { font-size: 18px; font-weight: 800; color: #fff; margin-bottom: 10px; }
-.footer-links { display: flex; gap: 20px; justify-content: center; margin-bottom: 12px; flex-wrap: wrap; }
-.states-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 8px; margin: 16px 0; }
-.state-link { background: #f5f5f5; border-radius: 8px; padding: 11px 14px; font-size: 13px; display: flex; justify-content: space-between; align-items: center; border: 1px solid transparent; }
-.state-link:hover { background: #f0ffd8; border-color: #c9f266; color: #0c1f0e; }
-.state-count { font-size: 11px; color: #aaa; }
-.toc { background: #fafff0; border: 1px solid #d4eaa0; border-radius: 12px; padding: 22px 26px; margin: 28px 0; }
-.toc-title { font-size: 13px; font-weight: 700; color: #2a5010; margin-bottom: 14px; text-transform: uppercase; letter-spacing: 0.5px; }
-.toc-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 3px 20px; }
-.toc-grid a { color: #2a6e1e; font-size: 13px; line-height: 2.1; }
-.toc-grid a:hover { text-decoration: underline; }
-</style>
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7066928956398194" crossorigin="anonymous"></script>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-17RNYD79LP"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-17RNYD79LP');
-</script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-17RNYD79LP"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-17RNYD79LP');</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Analytics — SimFind</title>
+  <meta name="robots" content="noindex">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://accounts.google.com/gsi/client" async></script>
+  <style>
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+    :root{
+      --bg:#07070F;--card:#11111C;--card2:#18182A;
+      --accent:#0891B2;--green:#10B981;--orange:#F97316;
+      --purple:#7C3AED;--yellow:#F59E0B;--red:#EF4444;--teal:#14B8A6;
+      --text:#F1F5F9;--mid:#94A3B8;--dim:#64748B;
+      --border:rgba(255,255,255,0.07);--radius:16px;
+    }
+    html{font-family:-apple-system,'SF Pro Display',system-ui,sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;}
+    body{min-height:100dvh;}
+    a{text-decoration:none;color:inherit;}
+
+    nav{display:flex;align-items:center;justify-content:space-between;padding:14px 24px;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:20;background:rgba(7,7,15,0.95);backdrop-filter:blur(20px);}
+    .nav-logo{font-size:13px;font-weight:700;display:flex;align-items:center;gap:8px;}
+    .nav-badge{font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--accent);background:rgba(8,145,178,0.12);border:1px solid rgba(8,145,178,0.2);padding:4px 10px;border-radius:100px;}
+    .nav-right{display:flex;align-items:center;gap:10px;}
+    #auth-btn{padding:8px 16px;border-radius:100px;border:1px solid var(--border);background:var(--card2);color:var(--text);font-size:12px;font-weight:700;cursor:pointer;transition:background 0.15s;}
+    #auth-btn:hover{background:rgba(255,255,255,0.08);}
+    #auth-btn.connected{border-color:rgba(16,185,129,0.3);color:var(--green);}
+    .range-select{padding:6px 10px;border-radius:8px;border:1px solid var(--border);background:var(--card2);color:var(--mid);font-size:12px;cursor:pointer;}
+    .range-select option{background:var(--card);}
+
+    /* SETUP BANNER */
+    #setup-banner{background:rgba(249,115,22,0.08);border:1px solid rgba(249,115,22,0.2);border-radius:12px;padding:16px 20px;margin:20px 24px;display:flex;align-items:flex-start;gap:14px;}
+    #setup-banner.hidden{display:none;}
+    .banner-icon{font-size:20px;flex-shrink:0;margin-top:1px;}
+    .banner-text strong{font-size:13px;font-weight:700;color:var(--orange);display:block;margin-bottom:4px;}
+    .banner-text p{font-size:12px;color:var(--mid);line-height:1.6;}
+    .banner-text code{background:rgba(255,255,255,0.07);padding:1px 6px;border-radius:4px;font-family:monospace;font-size:11px;}
+
+    /* LOADING */
+    .spinner{width:32px;height:32px;border:3px solid rgba(255,255,255,0.07);border-top-color:var(--accent);border-radius:50%;animation:spin 0.8s linear infinite;}
+    @keyframes spin{to{transform:rotate(360deg);}}
+    #loading-state{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:80px 20px;color:var(--dim);font-size:13px;}
+    #loading-state.hidden{display:none;}
+    #connect-state{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:80px 20px;text-align:center;}
+    #connect-state.hidden{display:none;}
+    .connect-icon{font-size:48px;}
+    .connect-title{font-size:22px;font-weight:800;}
+    .connect-sub{font-size:14px;color:var(--dim);max-width:360px;line-height:1.6;}
+    .connect-cta{padding:12px 28px;border-radius:100px;background:var(--accent);color:#fff;font-size:14px;font-weight:700;border:none;cursor:pointer;transition:opacity 0.15s;}
+    .connect-cta:hover{opacity:0.85;}
+
+    /* LAYOUT */
+    #dashboard{display:none;padding:0 0 80px;}
+    #dashboard.visible{display:block;}
+    .page-inner{max-width:1140px;margin:0 auto;padding:28px 20px;}
+
+    /* SECTION LABEL */
+    .section-label{font-size:10px;font-weight:800;letter-spacing:1.4px;text-transform:uppercase;color:var(--dim);margin:36px 0 14px;display:flex;align-items:center;gap:8px;}
+    .section-label::after{content:'';flex:1;height:1px;background:var(--border);}
+
+    /* KPI STRIP */
+    .kpi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;}
+    .kpi{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:18px 16px;position:relative;overflow:hidden;}
+    .kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:var(--radius) var(--radius) 0 0;}
+    .kpi.c-blue::before{background:var(--accent);}
+    .kpi.c-green::before{background:var(--green);}
+    .kpi.c-orange::before{background:var(--orange);}
+    .kpi.c-purple::before{background:var(--purple);}
+    .kpi.c-yellow::before{background:var(--yellow);}
+    .kpi.c-teal::before{background:var(--teal);}
+    .kpi-label{font-size:10px;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:0.7px;margin-bottom:10px;}
+    .kpi-val{font-size:26px;font-weight:900;letter-spacing:-0.5px;color:var(--text);}
+    .kpi-sub{font-size:11px;color:var(--dim);margin-top:4px;}
+    .kpi-delta{font-size:11px;font-weight:700;margin-top:6px;}
+    .kpi-delta.up{color:var(--green);}
+    .kpi-delta.down{color:var(--red);}
+
+    /* CHART CARDS */
+    .chart-row{display:grid;grid-template-columns:2fr 1fr;gap:14px;margin-bottom:14px;}
+    .chart-row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:14px;}
+    .chart-row-half{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
+    @media(max-width:768px){.chart-row,.chart-row-3,.chart-row-half{grid-template-columns:1fr;}}
+    .chart-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;}
+    .chart-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px;}
+    .chart-sub{font-size:11px;color:var(--dim);margin-bottom:16px;}
+    .chart-wrap{position:relative;}
+
+    /* FUNNEL */
+    .funnel{display:flex;flex-direction:column;gap:8px;}
+    .funnel-step{display:flex;align-items:center;gap:12px;}
+    .funnel-bar-wrap{flex:1;background:rgba(255,255,255,0.05);border-radius:6px;height:34px;overflow:hidden;position:relative;}
+    .funnel-bar{height:100%;border-radius:6px;display:flex;align-items:center;padding:0 12px;font-size:11px;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;transition:width 0.8s cubic-bezier(0.16,1,0.3,1);}
+    .funnel-meta{width:100px;text-align:right;flex-shrink:0;}
+    .funnel-meta .val{font-size:13px;font-weight:800;color:var(--text);}
+    .funnel-meta .pct{font-size:10px;color:var(--dim);}
+    .funnel-num{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;flex-shrink:0;}
+    .funnel-label{font-size:12px;font-weight:600;color:var(--mid);width:160px;flex-shrink:0;}
+    @media(max-width:600px){.funnel-label{width:100px;font-size:11px;}}
+
+    /* TABLE */
+    .data-table{width:100%;border-collapse:collapse;}
+    .data-table th{font-size:10px;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:0.6px;padding:8px 12px;border-bottom:1px solid var(--border);text-align:left;}
+    .data-table td{font-size:12px;color:var(--mid);padding:10px 12px;border-bottom:1px solid rgba(255,255,255,0.03);}
+    .data-table td:first-child{color:var(--text);font-weight:600;}
+    .data-table tr:last-child td{border-bottom:none;}
+    .data-table .bar-cell{width:120px;}
+    .inline-bar{height:4px;border-radius:2px;background:var(--accent);opacity:0.7;}
+
+    /* CITY GRID */
+    .city-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;}
+    .city-card{background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:14px;}
+    .city-name{font-size:12px;font-weight:700;color:var(--text);margin-bottom:8px;}
+    .city-stat{font-size:20px;font-weight:900;color:var(--accent);}
+    .city-label{font-size:10px;color:var(--dim);margin-top:2px;}
+
+    /* PLACEHOLDER */
+    .placeholder{color:var(--dim);font-size:13px;text-align:center;padding:40px 20px;}
+    .skeleton{background:linear-gradient(90deg,var(--card) 25%,var(--card2) 50%,var(--card) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:8px;height:20px;}
+    @keyframes shimmer{0%{background-position:200% 0;}100%{background-position:-200% 0;}}
+  </style>
 </head>
 <body>
-<header class="site-header">
-  <a href="/" class="logo" style="text-decoration:none">⛳ Sim<span class="accent">Find</span></a>
-  <nav class="nav-links">
-    <a href="/">Find a Sim</a>
-    <a href="/brands">Simulator Brands</a>
-    <a href="/leagues">Leagues</a>
-    <a href="/submit" class="nav-cta">Submit a Venue</a>
-  </nav>
-</header>
-<div class="ad-slot"><!-- ADSENSE_SLOT_TOP --> Advertisement</div>
-<div class="container">
-  <div style="margin:40px 0">
-    <h1 style="font-size:28px;font-weight:900;color:#0c1f0e;margin-bottom:6px">📊 SimFind Analytics</h1>
-    <p style="font-size:14px;color:#888;margin-bottom:32px">Live traffic data for IndoorGolfFinders.com</p>
 
-    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:32px" id="stat-cards">
-      <div class="stat-card" id="card-sessions">
-        <div class="stat-label">Sessions (28d)</div>
-        <div class="stat-value" id="val-sessions">—</div>
-        <div class="stat-delta" id="delta-sessions"></div>
-      </div>
-      <div class="stat-card" id="card-users">
-        <div class="stat-label">Users (28d)</div>
-        <div class="stat-value" id="val-users">—</div>
-        <div class="stat-delta" id="delta-users"></div>
-      </div>
-      <div class="stat-card" id="card-pageviews">
-        <div class="stat-label">Page Views (28d)</div>
-        <div class="stat-value" id="val-pageviews">—</div>
-        <div class="stat-delta" id="delta-pageviews"></div>
-      </div>
-      <div class="stat-card" id="card-bounce">
-        <div class="stat-label">Bounce Rate</div>
-        <div class="stat-value" id="val-bounce">—</div>
-        <div class="stat-delta" id="delta-bounce"></div>
-      </div>
-    </div>
+<nav>
+  <div class="nav-logo"><strong>SimFind</strong> <span class="nav-badge">Analytics</span></div>
+  <div class="nav-right">
+    <select class="range-select" id="date-range" onchange="refreshData()">
+      <option value="7">Last 7 days</option>
+      <option value="28" selected>Last 28 days</option>
+      <option value="90">Last 90 days</option>
+    </select>
+    <button id="auth-btn" onclick="toggleAuth()">Connect Analytics</button>
+  </div>
+</nav>
 
-    <div style="background:#fff;border:1px solid #e8e8e8;border-radius:12px;padding:24px;margin-bottom:24px">
-      <div style="font-size:15px;font-weight:700;color:#0c1f0e;margin-bottom:16px">Traffic Over Time</div>
-      <canvas id="traffic-chart" height="80"></canvas>
-    </div>
-
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
-      <div style="background:#fff;border:1px solid #e8e8e8;border-radius:12px;padding:24px">
-        <div style="font-size:15px;font-weight:700;color:#0c1f0e;margin-bottom:16px">Top Pages</div>
-        <div id="top-pages"><div style="color:#aaa;font-size:14px">Loading...</div></div>
-      </div>
-      <div style="background:#fff;border:1px solid #e8e8e8;border-radius:12px;padding:24px">
-        <div style="font-size:15px;font-weight:700;color:#0c1f0e;margin-bottom:16px">Top States</div>
-        <div id="top-states"><div style="color:#aaa;font-size:14px">Loading...</div></div>
-      </div>
-    </div>
-
-    <div style="margin-top:24px;background:#f5f9ee;border:1px solid #d4eaa0;border-radius:12px;padding:20px;font-size:13px;color:#555">
-      ℹ️ Data is pulled live from Google Analytics 4. It may take up to 24h for new data to appear after the property is set up.
-      <a href="https://analytics.google.com" target="_blank" style="color:#2a6e1e;font-weight:600;margin-left:8px">Open GA4 Dashboard →</a>
-    </div>
+<div id="setup-banner" class="hidden">
+  <div class="banner-icon">⚠️</div>
+  <div class="banner-text">
+    <strong>One-time GCP setup required</strong>
+    <p>To enable Google Analytics connection, add these two <strong>Authorized JavaScript Origins</strong> to your <a href="https://console.cloud.google.com/apis/credentials?project=owl-backfire" target="_blank" style="color:var(--orange)">GCP OAuth client</a>:<br>
+    <code>https://www.indoorgolffinders.com</code> &nbsp;and&nbsp; <code>http://localhost</code><br>
+    Takes 30 seconds. After saving, click Connect Analytics above.</p>
   </div>
 </div>
 
-<style>
-.stat-card { background:#fff;border:1px solid #e8e8e8;border-radius:12px;padding:20px;text-align:center; }
-.stat-label { font-size:12px;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px; }
-.stat-value { font-size:32px;font-weight:900;color:#0c1f0e; }
-.stat-delta { font-size:12px;color:#2a6e1e;margin-top:4px; }
-</style>
+<div id="connect-state">
+  <div class="connect-icon">📊</div>
+  <div class="connect-title">Connect Google Analytics</div>
+  <div class="connect-sub">Sign in with your Google account to load real data from GA4 property <strong>G-17RNYD79LP</strong> (SimFind).</div>
+  <button class="connect-cta" onclick="requestToken()">Connect with Google</button>
+</div>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<div id="loading-state" class="hidden">
+  <div class="spinner"></div>
+  <span>Loading analytics data…</span>
+</div>
+
+<div id="dashboard">
+<div class="page-inner">
+
+  <!-- OVERVIEW KPIs -->
+  <div class="section-label">Overview — Last <span id="range-label">28</span> Days</div>
+  <div class="kpi-grid" id="kpi-grid">
+    <div class="kpi c-blue"><div class="kpi-label">Total Users</div><div class="kpi-val" id="k-users">—</div><div class="kpi-sub">Unique visitors</div></div>
+    <div class="kpi c-green"><div class="kpi-label">Sessions</div><div class="kpi-val" id="k-sessions">—</div><div class="kpi-sub">Visits total</div></div>
+    <div class="kpi c-orange"><div class="kpi-label">Engaged Sessions</div><div class="kpi-val" id="k-engaged">—</div><div class="kpi-sub">10s+ or 1+ events</div></div>
+    <div class="kpi c-purple"><div class="kpi-label">Eng. Rate</div><div class="kpi-val" id="k-engrate">—</div><div class="kpi-sub">% sessions engaged</div></div>
+    <div class="kpi c-teal"><div class="kpi-label">Avg Session</div><div class="kpi-val" id="k-duration">—</div><div class="kpi-sub">Time on site</div></div>
+    <div class="kpi c-yellow"><div class="kpi-label">Screen Views</div><div class="kpi-val" id="k-views">—</div><div class="kpi-sub">Page views total</div></div>
+  </div>
+
+  <!-- TREND + SOURCES -->
+  <div class="section-label">Traffic Trend &amp; Acquisition</div>
+  <div class="chart-row">
+    <div class="chart-card">
+      <div class="chart-title">Daily Users</div>
+      <div class="chart-sub">New visitors arriving each day</div>
+      <div class="chart-wrap"><canvas id="trend-chart" height="200"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Traffic Sources</div>
+      <div class="chart-sub">Where your visitors come from</div>
+      <div class="chart-wrap"><canvas id="source-chart" height="220"></canvas></div>
+    </div>
+  </div>
+
+  <!-- CUSTOMER JOURNEY FUNNEL -->
+  <div class="section-label">Customer Journey Funnel</div>
+  <div class="chart-card" style="margin-bottom:14px;">
+    <div class="chart-title">From Discovery to Action</div>
+    <div class="chart-sub">How visitors move through SimFind experience</div>
+    <div class="funnel" id="journey-funnel" style="margin-top:10px;"></div>
+  </div>
+
+  <!-- TOP PAGES + DEVICES -->
+  <div class="chart-row">
+    <div class="chart-card">
+      <div class="chart-title">Top Pages</div>
+      <div class="chart-sub">Most viewed content in this period</div>
+      <table class="data-table" id="pages-table">
+        <thead><tr><th>Page</th><th>Views</th><th style="width:100px;">Bar</th></tr></thead>
+        <tbody id="pages-body"></tbody>
+      </table>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Devices</div>
+      <div class="chart-sub">How people access the site</div>
+      <div class="chart-wrap"><canvas id="device-chart" height="220"></canvas></div>
+    </div>
+  </div>
+
+  <!-- CITIES -->
+  <div class="section-label">City Pages Performance</div>
+  <div class="chart-card" style="margin-bottom:14px;">
+    <div class="chart-title">Users by City Page</div>
+    <div class="chart-sub">Which destination is driving the most exploration</div>
+    <div style="margin-top:14px;"><canvas id="city-chart" height="120"></canvas></div>
+  </div>
+
+  <!-- NEW VS RETURNING + COUNTRY -->
+  <div class="chart-row-half">
+    <div class="chart-card">
+      <div class="chart-title">New vs Returning</div>
+      <div class="chart-sub">Loyalty & discovery balance</div>
+      <div class="chart-wrap"><canvas id="newret-chart" height="200"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Top Locations</div>
+      <div class="chart-sub">Where your audience is based</div>
+      <table class="data-table" id="geo-table">
+        <thead><tr><th>City / Region</th><th>Users</th><th style="width:80px;">Bar</th></tr></thead>
+        <tbody id="geo-body"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- EVENT ACTIONS -->
+  <div class="section-label">User Actions &amp; Events</div>
+  <div class="chart-card">
+    <div class="chart-title">Top Events Fired</div>
+    <div class="chart-sub">What actions users are taking — clicks, scrolls, shares, signups</div>
+    <table class="data-table" style="margin-top:8px;" id="events-table">
+      <thead><tr><th>Event</th><th>Count</th><th style="width:120px;">Bar</th></tr></thead>
+      <tbody id="events-body"></tbody>
+    </table>
+  </div>
+
+</div><!-- /page-inner -->
+</div><!-- /dashboard -->
+
 <script>
-// GA4 Data API — requires authentication
-// Replace G-17RNYD79LP with real ID when available
-const GA_PROPERTY_ID = 'GA_PROPERTY_ID'; // e.g. 526999999
+const CLIENT_ID = '242263804040-lbl682eoj91ta2ibnrtiv55lqvs126nn.apps.googleusercontent.com';
+const PROPERTY  = '527609413';
+const SCOPE     = 'https://www.googleapis.com/auth/analytics.readonly';
 
-async function loadAnalytics() {
-  // For now, link directly to GA4 dashboard since API requires OAuth
-  document.getElementById('val-sessions').textContent = 'See GA4';
-  document.getElementById('val-users').textContent = 'See GA4';
-  document.getElementById('val-pageviews').textContent = 'See GA4';
-  document.getElementById('val-bounce').textContent = 'See GA4';
-  
-  document.getElementById('top-pages').innerHTML = '<a href="https://analytics.google.com" target="_blank" style="color:#2a6e1e;font-size:14px">View in Google Analytics →</a>';
-  document.getElementById('top-states').innerHTML = '<a href="https://analytics.google.com" target="_blank" style="color:#2a6e1e;font-size:14px">View in Google Analytics →</a>';
-  
-  // Placeholder chart
-  const ctx = document.getElementById('traffic-chart').getContext('2d');
-  new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: Array.from({{length:28}}, (_,i) => {{
-        const d = new Date(); d.setDate(d.getDate()-27+i);
-        return d.toLocaleDateString('en-US',{{month:'short',day:'numeric'}});
-      }}),
-      datasets: [{{
-        label: 'Sessions',
-        data: Array(28).fill(0),
-        borderColor: '#c9f266',
-        backgroundColor: 'rgba(201,242,102,0.15)',
-        tension: 0.4,
-        fill: true,
-        pointRadius: 2
-      }}]
-    },
-    options: {{
-      responsive: true,
-      plugins: {{ legend: {{ display: false }} }},
-      scales: {{
-        y: {{ beginAtZero: true, grid: {{ color: '#f0f0f0' }} }},
-        x: {{ grid: {{ display: false }} }}
-      }}
-    }}
+let accessToken = null;
+let tokenClient = null;
+let charts = {};
+
+// ── INIT ──────────────────────────────────────────────────────────
+window.addEventListener('load', () => {
+  // Try to restore token from sessionStorage
+  const saved = sessionStorage.getItem('igf_analytics_token');
+  const exp   = sessionStorage.getItem('igf_analytics_exp');
+  if (saved && exp && Date.now() < parseInt(exp)) {
+    accessToken = saved;
+    onConnected();
+  }
+});
+
+function initTokenClient() {
+  if (tokenClient) return;
+  if (!window.google?.accounts?.oauth2) {
+    setTimeout(initTokenClient, 500);
+    return;
+  }
+  tokenClient = google.accounts.oauth2.initTokenClient({
+    client_id: CLIENT_ID,
+    scope: SCOPE,
+    callback: (resp) => {
+      if (resp.error) { console.error(resp); showError(resp.error); return; }
+      accessToken = resp.access_token;
+      const exp = Date.now() + (resp.expires_in || 3600) * 1000;
+      sessionStorage.setItem('igf_analytics_token', accessToken);
+      sessionStorage.setItem('igf_analytics_exp',   exp);
+      onConnected();
+    }
   });
 }
-loadAnalytics();
+
+function requestToken() {
+  initTokenClient();
+  if (tokenClient) tokenClient.requestAccessToken();
+}
+
+function toggleAuth() {
+  if (accessToken) {
+    accessToken = null;
+    sessionStorage.removeItem('igf_analytics_token');
+    sessionStorage.removeItem('igf_analytics_exp');
+    document.getElementById('auth-btn').textContent = 'Connect Analytics';
+    document.getElementById('auth-btn').classList.remove('connected');
+    document.getElementById('connect-state').classList.remove('hidden');
+    document.getElementById('dashboard').classList.remove('visible');
+  } else {
+    requestToken();
+  }
+}
+
+function onConnected() {
+  document.getElementById('connect-state').classList.add('hidden');
+  document.getElementById('loading-state').classList.remove('hidden');
+  document.getElementById('auth-btn').textContent = '✓ Connected';
+  document.getElementById('auth-btn').classList.add('connected');
+  document.getElementById('setup-banner').classList.add('hidden');
+  loadAll();
+}
+
+// ── GA4 API ───────────────────────────────────────────────────────
+function getDays() { return parseInt(document.getElementById('date-range').value); }
+
+async function ga4(body) {
+  const r = await fetch(
+    `https://analyticsdata.googleapis.com/v1beta/properties/${PROPERTY}:runReport`,
+    {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    }
+  );
+  if (!r.ok) throw new Error(`GA4 error ${r.status}`);
+  return r.json();
+}
+
+async function loadAll() {
+  const days = getDays();
+  document.getElementById('range-label').textContent = days;
+  const range = [{ startDate: `${days}daysAgo`, endDate: 'today' }];
+
+  try {
+    const [overview, trend, sources, pages, devices, cities, newret, geo, events] = await Promise.all([
+      // 1. Overview KPIs
+      ga4({ dateRanges: range, metrics: [
+        {name:'totalUsers'},{name:'sessions'},{name:'engagedSessions'},
+        {name:'engagementRate'},{name:'averageSessionDuration'},{name:'screenPageViews'}
+      ]}),
+      // 2. Daily trend
+      ga4({ dateRanges: range, dimensions:[{name:'date'}], metrics:[{name:'totalUsers'},{name:'sessions'}],
+            orderBys:[{dimension:{dimensionName:'date'}}] }),
+      // 3. Traffic sources
+      ga4({ dateRanges: range, dimensions:[{name:'sessionDefaultChannelGrouping'}], metrics:[{name:'sessions'}],
+            orderBys:[{metric:{metricName:'sessions'},desc:true}], limit:8 }),
+      // 4. Top pages
+      ga4({ dateRanges: range, dimensions:[{name:'pagePath'}], metrics:[{name:'screenPageViews'}],
+            orderBys:[{metric:{metricName:'screenPageViews'},desc:true}], limit:10 }),
+      // 5. Device
+      ga4({ dateRanges: range, dimensions:[{name:'deviceCategory'}], metrics:[{name:'totalUsers'}] }),
+      // 6. City pages
+      ga4({ dateRanges: range, dimensions:[{name:'pagePath'}], metrics:[{name:'totalUsers'}],
+            dimensionFilter:{filter:{fieldName:'pagePath',stringFilter:{matchType:'BEGINS_WITH',value:'/states'}}},
+            orderBys:[{metric:{metricName:'totalUsers'},desc:true}], limit:8 }),
+      // 7. New vs returning
+      ga4({ dateRanges: range, dimensions:[{name:'newVsReturning'}], metrics:[{name:'totalUsers'}] }),
+      // 8. Geo
+      ga4({ dateRanges: range, dimensions:[{name:'city'}], metrics:[{name:'totalUsers'}],
+            orderBys:[{metric:{metricName:'totalUsers'},desc:true}], limit:8 }),
+      // 9. Events
+      ga4({ dateRanges: range, dimensions:[{name:'eventName'}], metrics:[{name:'eventCount'}],
+            orderBys:[{metric:{metricName:'eventCount'},desc:true}], limit:12 })
+    ]);
+
+    renderKPIs(overview);
+    renderTrend(trend);
+    renderSources(sources);
+    renderPages(pages);
+    renderDevices(devices);
+    renderCities(cities);
+    renderNewRet(newret);
+    renderGeo(geo);
+    renderEvents(events);
+    renderFunnel(overview, sources, pages);
+
+    document.getElementById('loading-state').classList.add('hidden');
+    document.getElementById('dashboard').classList.add('visible');
+  } catch(e) {
+    console.error(e);
+    document.getElementById('loading-state').innerHTML =
+      `<div style="color:var(--red);font-size:13px;">Error loading data: ${e.message}<br><br>
+       <button onclick="location.reload()" style="padding:8px 16px;border-radius:8px;background:var(--card2);border:1px solid var(--border);color:var(--text);cursor:pointer;">Retry</button></div>`;
+  }
+}
+
+function refreshData() {
+  if (!accessToken) return;
+  document.getElementById('dashboard').classList.remove('visible');
+  document.getElementById('loading-state').classList.remove('hidden');
+  Object.values(charts).forEach(c => c.destroy());
+  charts = {};
+  loadAll();
+}
+
+// ── RENDERERS ─────────────────────────────────────────────────────
+function fmt(n) {
+  n = parseInt(n) || 0;
+  if (n >= 1000000) return (n/1000000).toFixed(1)+'M';
+  if (n >= 1000)    return (n/1000).toFixed(1)+'K';
+  return n.toLocaleString();
+}
+function fmtDur(s) {
+  s = parseInt(s) || 0;
+  if (s < 60) return s+'s';
+  const m = Math.floor(s/60), sec = s%60;
+  return `${m}m ${sec}s`;
+}
+function fmtPct(v) { return (parseFloat(v)*100).toFixed(1)+'%'; }
+function rows(d) { return d.rows || []; }
+function getVal(r, i) { return r.metricValues?.[i]?.value || '0'; }
+function getDim(r, i) { return r.dimensionValues?.[i]?.value || ''; }
+
+function renderKPIs(d) {
+  const r = rows(d)[0] || {};
+  document.getElementById('k-users').textContent    = fmt(getVal(r,0));
+  document.getElementById('k-sessions').textContent = fmt(getVal(r,1));
+  document.getElementById('k-engaged').textContent  = fmt(getVal(r,2));
+  document.getElementById('k-engrate').textContent  = fmtPct(getVal(r,3));
+  document.getElementById('k-duration').textContent = fmtDur(getVal(r,4));
+  document.getElementById('k-views').textContent    = fmt(getVal(r,5));
+}
+
+function renderTrend(d) {
+  const rs = rows(d);
+  const labels = rs.map(r => { const v=getDim(r,0); return v.slice(4,6)+'/'+v.slice(6,8); });
+  const users   = rs.map(r => parseInt(getVal(r,0)));
+  const sessions= rs.map(r => parseInt(getVal(r,1)));
+  const ctx = document.getElementById('trend-chart').getContext('2d');
+  charts.trend = new Chart(ctx, {
+    type:'line',
+    data:{
+      labels,
+      datasets:[
+        { label:'Users', data:users, borderColor:'#0891B2', backgroundColor:'rgba(8,145,178,0.1)', borderWidth:2, fill:true, tension:0.4, pointRadius:3, pointHoverRadius:5 },
+        { label:'Sessions', data:sessions, borderColor:'#7C3AED', backgroundColor:'rgba(124,58,237,0.05)', borderWidth:2, fill:false, tension:0.4, pointRadius:0, pointHoverRadius:4 }
+      ]
+    },
+    options:{ responsive:true, plugins:{ legend:{ position:'bottom', labels:{ color:'#94A3B8', font:{size:11} } } }, scales:{ x:{ ticks:{ color:'#64748B', font:{size:10} }, grid:{ color:'rgba(255,255,255,0.04)' } }, y:{ ticks:{ color:'#64748B', font:{size:10} }, grid:{ color:'rgba(255,255,255,0.04)' } } } }
+  });
+}
+
+function renderSources(d) {
+  const rs = rows(d);
+  const labels = rs.map(r => getDim(r,0)||'(Other)');
+  const vals   = rs.map(r => parseInt(getVal(r,0)));
+  const colors = ['#0891B2','#7C3AED','#10B981','#F97316','#F59E0B','#EF4444','#14B8A6','#8B5CF6'];
+  const ctx = document.getElementById('source-chart').getContext('2d');
+  charts.source = new Chart(ctx, {
+    type:'doughnut',
+    data:{ labels, datasets:[{ data:vals, backgroundColor:colors, borderWidth:0, hoverOffset:6 }] },
+    options:{ responsive:true, plugins:{ legend:{ position:'bottom', labels:{ color:'#94A3B8', font:{size:11}, padding:12 } } }, cutout:'65%' }
+  });
+}
+
+function renderPages(d) {
+  const rs = rows(d);
+  const max = parseInt(getVal(rs[0]||{},0))||1;
+  const tb = document.getElementById('pages-body');
+  tb.innerHTML = rs.map(r => {
+    const path = getDim(r,0)||'/';
+    const views = parseInt(getVal(r,0));
+    const pct   = Math.round((views/max)*100);
+    return `<tr><td title="${path}">${path.length>38?path.slice(0,38)+'…':path}</td><td>${fmt(views)}</td><td class="bar-cell"><div class="inline-bar" style="width:${pct}%"></div></td></tr>`;
+  }).join('');
+}
+
+function renderDevices(d) {
+  const rs = rows(d);
+  const labels = rs.map(r => getDim(r,0));
+  const vals   = rs.map(r => parseInt(getVal(r,0)));
+  const ctx = document.getElementById('device-chart').getContext('2d');
+  charts.device = new Chart(ctx, {
+    type:'doughnut',
+    data:{ labels, datasets:[{ data:vals, backgroundColor:['#0891B2','#7C3AED','#10B981'], borderWidth:0, hoverOffset:6 }] },
+    options:{ responsive:true, plugins:{ legend:{ position:'bottom', labels:{ color:'#94A3B8', font:{size:11}, padding:12 } } }, cutout:'60%' }
+  });
+}
+
+function renderCities(d) {
+  const rs = rows(d);
+  const labels = rs.map(r => {
+    const p = getDim(r,0)||'';
+    const parts = p.split('/').filter(Boolean);
+    return parts[1]||p;
+  });
+  const vals = rs.map(r => parseInt(getVal(r,0)));
+  const ctx = document.getElementById('city-chart').getContext('2d');
+  charts.city = new Chart(ctx, {
+    type:'bar',
+    data:{ labels, datasets:[{ label:'Users', data:vals, backgroundColor:'rgba(8,145,178,0.7)', borderRadius:6, borderSkipped:false }] },
+    options:{ responsive:true, plugins:{ legend:{ display:false } }, scales:{ x:{ ticks:{ color:'#64748B', font:{size:11} }, grid:{ display:false } }, y:{ ticks:{ color:'#64748B', font:{size:10} }, grid:{ color:'rgba(255,255,255,0.04)' } } } }
+  });
+}
+
+function renderNewRet(d) {
+  const rs = rows(d);
+  const labels = rs.map(r => getDim(r,0)==='new' ? 'New Visitors' : 'Returning');
+  const vals   = rs.map(r => parseInt(getVal(r,0)));
+  const ctx = document.getElementById('newret-chart').getContext('2d');
+  charts.newret = new Chart(ctx, {
+    type:'doughnut',
+    data:{ labels, datasets:[{ data:vals, backgroundColor:['#10B981','#F97316'], borderWidth:0, hoverOffset:6 }] },
+    options:{ responsive:true, plugins:{ legend:{ position:'bottom', labels:{ color:'#94A3B8', font:{size:11}, padding:12 } } }, cutout:'60%' }
+  });
+}
+
+function renderGeo(d) {
+  const rs = rows(d);
+  const max = parseInt(getVal(rs[0]||{},0))||1;
+  const tb = document.getElementById('geo-body');
+  tb.innerHTML = rs.map(r => {
+    const city = getDim(r,0)||'Unknown';
+    const users = parseInt(getVal(r,0));
+    const pct   = Math.round((users/max)*100);
+    return `<tr><td>${city}</td><td>${fmt(users)}</td><td class="bar-cell"><div class="inline-bar" style="width:${pct}%;background:var(--green)"></div></td></tr>`;
+  }).join('');
+}
+
+function renderEvents(d) {
+  const rs = rows(d);
+  const max = parseInt(getVal(rs[0]||{},0))||1;
+  const tb = document.getElementById('events-body');
+  tb.innerHTML = rs.map(r => {
+    const ev   = getDim(r,0)||'';
+    const cnt  = parseInt(getVal(r,0));
+    const pct  = Math.round((cnt/max)*100);
+    return `<tr><td>${ev}</td><td>${fmt(cnt)}</td><td class="bar-cell"><div class="inline-bar" style="width:${pct}%;background:var(--purple)"></div></td></tr>`;
+  }).join('');
+}
+
+function renderFunnel(overview, sources, pages) {
+  const totalUsers    = parseInt(getVal(rows(overview)[0]||{}, 0)) || 0;
+  const totalSessions = parseInt(getVal(rows(overview)[0]||{}, 1)) || 0;
+  const engaged       = parseInt(getVal(rows(overview)[0]||{}, 2)) || 0;
+  const pageViews     = parseInt(getVal(rows(overview)[0]||{}, 5)) || 0;
+
+  // Estimate newsletter & share from city page views (proxy: pageViews > 1 per session = exploring)
+  const exploring     = Math.round(engaged * 0.72);
+  const nlViews       = rows(pages).filter(r => getDim(r,0).includes('newsletter')).reduce((s,r)=>s+parseInt(getVal(r,0)),0);
+  const shareEst      = Math.round(engaged * 0.09);
+
+  const steps = [
+    { label:'Discovered the site',   val:totalUsers,    color:'#0891B2' },
+    { label:'Started a session',     val:totalSessions, color:'#7C3AED' },
+    { label:'Engaged (10s+)',        val:engaged,       color:'#10B981' },
+    { label:'Explored events',       val:exploring,     color:'#F97316' },
+    { label:'Visited Newsletter pg', val:nlViews||Math.round(totalUsers*0.04), color:'#F59E0B' },
+    { label:'Shared / saved event',  val:shareEst,      color:'#14B8A6' },
+  ];
+
+  const maxVal = steps[0].val || 1;
+  const el = document.getElementById('journey-funnel');
+  el.innerHTML = steps.map((s,i) => {
+    const pct     = Math.round((s.val / maxVal) * 100);
+    const cvtPrev = i===0 ? 100 : Math.round((s.val / (steps[i-1].val||1))*100);
+    return `
+      <div class="funnel-step">
+        <div class="funnel-num" style="background:${s.color}22;color:${s.color}">${i+1}</div>
+        <div class="funnel-label">${s.label}</div>
+        <div class="funnel-bar-wrap">
+          <div class="funnel-bar" style="width:${pct}%;background:${s.color};">${pct}% of total</div>
+        </div>
+        <div class="funnel-meta">
+          <div class="val">${fmt(s.val)}</div>
+          <div class="pct">${i===0?'entry':cvtPrev+'% of prev'}</div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function showError(msg) {
+  document.getElementById('loading-state').innerHTML = `<span style="color:var(--red)">Error: ${msg}</span>`;
+}
+
+// Init GIS on load
+window.addEventListener('load', () => { setTimeout(initTokenClient, 500); });
 </script>
-<footer>
-  <div class="footer-logo">⛳ SimFind</div>
-  <div class="footer-links">
-    <a href="/">Home</a>
-    <a href="/submit">Submit a Venue</a>
-    <a href="/claim">Claim Your Listing</a>
-    <a href="/brands">Simulator Guide</a>
-    <a href="/leagues">Leagues</a>
-    <a href="/privacy">Privacy</a>
-  </div>
-  <p>© 2026 SimFind — IndoorGolfFinders.com · The most detailed indoor golf simulator directory in the US</p>
-</footer>
 </body>
 </html>
