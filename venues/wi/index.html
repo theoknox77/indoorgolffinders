@@ -239,7 +239,38 @@ footer a { color: #c9f266; }
     <div><strong style="color:#0c1f0e">Foresight GC3</strong><br><span style="font-size:13px;color:#555">Camera-based. High accuracy. Popular in dedicated golf facilities.</span></div>
   </div>
 </div>
-  <div class="cta-box">
+  
+<div style="background:#f0fff4;border:1px solid #c9f266;border-radius:14px;padding:24px 28px;margin:32px 0;display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between;">
+  <div style="flex:1;min-width:200px;">
+    <div style="font-size:13px;font-weight:800;color:#0c1f0e;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">🏨 Staying nearby?</div>
+    <div style="font-size:15px;font-weight:700;color:#0c1f0e;margin-bottom:4px;">Find hotels close to this simulator</div>
+    <div style="font-size:13px;color:#666;">Book where you sleep, then tee off.</div>
+  </div>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;" id="hotel-btns">
+    <a id="hotels-link" href="https://www.anrdoezrs.net/click-101700525-1702763" target="_blank" rel="noopener"
+       style="background:#cc0000;color:#fff;font-size:13px;font-weight:700;padding:10px 18px;border-radius:8px;white-space:nowrap;display:inline-block;">Hotels.com →</a>
+    <a id="expedia-link" href="https://www.anrdoezrs.net/click-101700525-1874913" target="_blank" rel="noopener"
+       style="background:#00355f;color:#fff;font-size:13px;font-weight:700;padding:10px 18px;border-radius:8px;white-space:nowrap;display:inline-block;">Expedia →</a>
+  </div>
+</div>
+<script>
+(function(){
+  try {
+    var parts = window.location.pathname.replace(/\/$/,'').split('/');
+    // /venues/STATE/CITY or /venues/STATE/CITY/VENUE
+    var state = (parts[2]||'').toUpperCase();
+    var city = (parts[3]||'').replace(/-/g,' ').replace(/\b\w/g,function(c){return c.toUpperCase();});
+    if(!city) return;
+    var q = encodeURIComponent(city + (state ? ', '+state : ''));
+    var hLink = document.getElementById('hotels-link');
+    var eLink = document.getElementById('expedia-link');
+    if(hLink) hLink.href = 'https://www.anrdoezrs.net/click-101700525-1702763?url='+encodeURIComponent('https://www.hotels.com/search.do?destination='+q);
+    if(eLink) eLink.href = 'https://www.anrdoezrs.net/click-101700525-1874913?url='+encodeURIComponent('https://www.expedia.com/Hotels?destination='+q);
+  } catch(e){}
+})();
+</script>
+
+<div class="cta-box">
   <h3>🏌️ Own or manage a simulator venue?</h3>
   <p>List your venue for free — or claim your existing listing to update hours, pricing, and amenities.</p>
   <a class="cta-btn" href="/submit">Submit Your Venue →</a>
