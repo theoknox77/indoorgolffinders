@@ -141,13 +141,23 @@ def slugify(title: str) -> str:
 
 
 def call_roseanne(prompt: str) -> str:
-    result = subprocess.run(
-        ["python3", ROSEANNE, "--model", "8b", prompt],
-        capture_output=True,
-        text=True,
-        timeout=300,
+    """Generate blog content via Claude API (haiku — fast + high quality)."""
+    import anthropic
+    api_key = os.environ.get("ANTHROPIC_API_KEY")
+    if not api_key:
+        # Fall back to Ollama 3b if no key
+        result = subprocess.run(
+            ["python3", ROSEANNE, "--model", "3b", prompt],
+            capture_output=True, text=True, timeout=120,
+        )
+        return result.stdout.strip()
+    client = anthropic.Anthropic(api_key=api_key)
+    msg = client.messages.create(
+        model="claude-haiku-4-5",
+        max_tokens=1200,
+        messages=[{"role": "user", "content": prompt}],
     )
-    return result.stdout.strip()
+    return msg.content[0].text.strip()
 
 
 def make_meta_description(topic: str) -> str:
@@ -193,7 +203,8 @@ a {{ color: inherit; text-decoration: none; }}
 .nav-links a {{ color: rgba(255,255,255,0.75); font-size: 14px; }}
 .nav-links a:hover {{ color: #fff; }}
 .nav-cta {{ background: #c9f266 !important; color: #0c1f0e !important; font-weight: 700 !important; padding: 7px 16px; border-radius: 6px; font-size: 13px !important; }}
-.ad-slot {{ background: #f8f8f8; border-bottom: 1px solid #eee; text-align: center; padding: 12px; font-size: 11px; color: #bbb; text-transform: uppercase; letter-spacing: 0.5px; }}
+.ad-slot {{ text-align: center; padding: 8px 0; min-height: 90px; }}
+.inline-ad-wrap {{ margin: 28px 0; text-align: center; }}
 article {{ max-width: 760px; margin: 0 auto; padding: 40px 20px 60px; }}
 article h1 {{ font-size: 36px; font-weight: 900; color: #0c1f0e; line-height: 1.2; margin-bottom: 16px; letter-spacing: -0.5px; }}
 article .meta {{ font-size: 13px; color: #888; margin-bottom: 32px; }}
@@ -237,7 +248,15 @@ footer a {{ color: #c9f266; }}
     <a href="/submit" class="nav-cta">Submit a Venue</a>
   </nav>
 </header>
-<div class="ad-slot">Advertisement</div>
+<div class="ad-slot">
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-{ADSENSE_PUB}"
+       data-ad-slot="2847391056"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({{}});</script>
+</div>
 
 <div class="breadcrumb">
   <a href="/">Home</a> &rsaquo; <a href="/blog/">Blog</a> &rsaquo; {topic}
@@ -249,7 +268,15 @@ footer a {{ color: #c9f266; }}
 
 {body_html}
 
-  <div class="inline-ad">Advertisement</div>
+  <div class="inline-ad-wrap">
+    <ins class="adsbygoogle"
+         style="display:block; text-align:center;"
+         data-ad-client="ca-{ADSENSE_PUB}"
+         data-ad-slot="7183920465"
+         data-ad-format="fluid"
+         data-ad-layout="in-article"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({{}});</script>
+  </div>
 
   <div class="cta-box">
     <h3>Find Indoor Golf Near You</h3>
@@ -258,7 +285,15 @@ footer a {{ color: #c9f266; }}
   </div>
 </article>
 
-<div class="ad-slot">Advertisement</div>
+<div class="ad-slot">
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-{ADSENSE_PUB}"
+       data-ad-slot="2847391056"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({{}});</script>
+</div>
 
 <footer>
   <div class="footer-logo">⛳ SimFind</div>
@@ -294,10 +329,11 @@ def content_to_html(raw: str) -> str:
             # Skip H1 since we already have it
             pass
         elif line.startswith("- ") or line.startswith("* "):
-            # Wrap consecutive bullets in ul later; for now emit li
-            html_parts.append(f"  <li>{line[2:].strip()}</li>")
+            text = re.sub(r"\*\*(.*?)\*\*", r"<strong>\1</strong>", line[2:].strip())
+            html_parts.append(f"  <li>{text}</li>")
         elif re.match(r"^\d+\.\s", line):
-            html_parts.append(f"  <li>{re.sub(r'^\d+\.\s', '', line)}</li>")
+            text = re.sub(r"\*\*(.*?)\*\*", r"<strong>\1</strong>", re.sub(r'^\d+\.\s', '', line))
+            html_parts.append(f"  <li>{text}</li>")
         else:
             # Strip bold markdown for cleanliness
             line = re.sub(r"\*\*(.*?)\*\*", r"<strong>\1</strong>", line)
@@ -321,17 +357,47 @@ def content_to_html(raw: str) -> str:
 
 
 def build_prompt(topic: str) -> str:
-    return (
-        f'Write a helpful blog post titled "{topic}" for IndoorGolfFinders.com. '
-        "Write in a friendly, enthusiastic voice like a golf enthusiast sharing tips with a friend. "
-        "The post should be 600 to 800 words. "
-        "Include an intro paragraph, 3 to 5 subheadings with detailed content under each, "
-        "and a short conclusion that mentions IndoorGolfFinders.com as the best tool to find indoor golf venues near you. "
-        "Naturally weave in references to indoorgolffinders.com as the resource for finding venues. "
-        "Do not use em dashes. Do not use the phrase 'I'. Write in second person where appropriate. "
-        "Use plain text with markdown headings (##) and bullet points where helpful. "
-        "Do not include any HTML tags. Do not include a title heading at the top."
+    is_city = any(x in topic.lower() for x in ["in ", "near ", "county"])
+    city_section = (
+        "## The Local Scene\n"
+        "Talk about what the sim golf culture is like in that area: weather advantages (year-round play, rain days), "
+        "when to go (peak vs off-peak times), and any regional quirks. Keep it specific and genuine. "
+        "Then tell readers to search IndoorGolfFinders.com to find real venues near them.\n\n"
+    ) if is_city else (
+        "## Where to Find Venues\n"
+        "Tell readers that IndoorGolfFinders.com has 2,400+ verified indoor golf venues across the US "
+        "and is the easiest way to find one near them. One short paragraph, genuine and direct.\n\n"
     )
+
+    return f"""Write a blog post titled "{topic}" for IndoorGolfFinders.com.
+
+Use this EXACT structure with these EXACT section headings:
+
+[2-3 sentence intro] Hook the reader. Why does this topic matter? Local or seasonal angle if it fits. No heading for the intro.
+
+## What to Look For
+Cover the real criteria: simulator brands (TrackMan, Full Swing, Foresight GCQuad, SkyTrak, Bushnell Launch Pro), accuracy, course selection, instruction options, food and drink, booking process. Explain what separates a great venue from a mediocre one. Be specific.
+
+## What It Costs
+Give honest price ranges. Typical hourly rates run $30 to $60 per hour depending on location and simulator quality. Mention membership options, day passes, league nights. Tell readers what good value looks like vs. getting ripped off.
+
+## Tips for Getting the Most Out of It
+3 to 5 practical tips a golfer would actually use. Things like: book off-peak for better rates, ask about lesson packages, bring your own glove, check if they offer swing analysis. Advice that feels earned, not generic.
+
+{city_section}
+ABSOLUTE RULES — breaking any of these makes the post unusable:
+- 600 to 800 words total
+- DO NOT name any specific venue, business, club, bar, or location. Not even real ones. Not TopGolf, not GolfTEC, not any named place. Zero venue names, ever.
+- DO NOT create "Top Picks", "Best Options", "High-End Options" or any section that lists or recommends specific places.
+- Instead give readers the CRITERIA to evaluate any venue themselves. That is the job of this post.
+- Only real simulator brand names allowed as examples: TrackMan, Full Swing, Foresight GCQuad, SkyTrak, Bushnell Launch Pro
+- Write in second person (you, your). No first person (I, we).
+- No em dashes. No hyphens in prose. Use "to" for ranges (e.g. "30 to 60 dollars").
+- No HTML tags. No title heading at the top.
+- Sound like a knowledgeable golfer giving honest advice to a friend, not a directory listing.
+- End with one sentence pointing to IndoorGolfFinders.com as the place to find real venues.
+
+Write the full post now:"""
 
 
 def build_index_html(posts: list) -> str:
