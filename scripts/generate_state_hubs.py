@@ -1,0 +1,418 @@
+#!/usr/bin/env python3
+"""
+Generate state hub pages at /states/XX/index.html and /states/index.html
+"""
+
+import os
+import re
+import json
+import glob
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+VENUES_DIR = os.path.join(BASE_DIR, 'venues')
+STATES_DIR = os.path.join(BASE_DIR, 'states')
+
+STATE_NAMES = {
+    'ak': 'Alaska', 'al': 'Alabama', 'ar': 'Arkansas', 'az': 'Arizona',
+    'ca': 'California', 'co': 'Colorado', 'ct': 'Connecticut', 'dc': 'Washington DC',
+    'fl': 'Florida', 'ga': 'Georgia', 'hi': 'Hawaii', 'ia': 'Iowa',
+    'id': 'Idaho', 'il': 'Illinois', 'in': 'Indiana', 'ks': 'Kansas',
+    'ky': 'Kentucky', 'la': 'Louisiana', 'ma': 'Massachusetts', 'md': 'Maryland',
+    'me': 'Maine', 'mi': 'Michigan', 'mn': 'Minnesota', 'mo': 'Missouri',
+    'ms': 'Mississippi', 'mt': 'Montana', 'nc': 'North Carolina', 'nd': 'North Dakota',
+    'ne': 'Nebraska', 'nj': 'New Jersey', 'nm': 'New Mexico', 'nv': 'Nevada',
+    'ny': 'New York', 'oh': 'Ohio', 'ok': 'Oklahoma', 'or': 'Oregon',
+    'pa': 'Pennsylvania', 'ri': 'Rhode Island', 'sc': 'South Carolina', 'sd': 'South Dakota',
+    'tn': 'Tennessee', 'tx': 'Texas', 'ut': 'Utah', 'va': 'Virginia',
+    'wa': 'Washington', 'wi': 'Wisconsin'
+}
+
+CSS = """* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: #1a1a1a; background: #fff; line-height: 1.5; }
+a { color: inherit; text-decoration: none; }
+.site-header { background: #0c1f0e; padding: 14px 32px; display: flex; align-items: center; justify-content: space-between; }
+.logo { color: #fff; font-size: 22px; font-weight: 800; }
+.logo .accent { color: #c9f266; }
+.nav-links { display: flex; gap: 20px; align-items: center; }
+.nav-links a { color: rgba(255,255,255,0.75); font-size: 14px; }
+.nav-links a:hover { color: #fff; }
+.nav-cta { background: #c9f266 !important; color: #0c1f0e !important; font-weight: 700 !important; padding: 7px 16px; border-radius: 6px; font-size: 13px !important; }
+.ad-slot { background: #f8f8f8; border-bottom: 1px solid #eee; text-align: center; padding: 12px; font-size: 11px; color: #bbb; text-transform: uppercase; letter-spacing: 0.5px; min-height: 90px; }
+.container { max-width: 920px; margin: 0 auto; padding: 0 20px; }
+.breadcrumb { font-size: 13px; color: #888; padding: 14px 0 0; }
+.breadcrumb a { color: #2a6e1e; }
+.breadcrumb span { margin: 0 6px; }
+.section-header { display: flex; align-items: baseline; justify-content: space-between; border-bottom: 3px solid #0c1f0e; padding-bottom: 10px; margin: 36px 0 14px; }
+.section-header h2 { font-size: 24px; font-weight: 900; }
+.section-meta { font-size: 13px; color: #777; }
+.cta-box { background: linear-gradient(135deg, #0c1f0e 0%, #1a3d1e 100%); color: #fff; border-radius: 14px; padding: 32px 36px; text-align: center; margin: 40px 0; }
+.cta-box h3 { font-size: 22px; font-weight: 900; margin-bottom: 8px; }
+.cta-box p { font-size: 14px; opacity: 0.75; margin-bottom: 22px; }
+.cta-btn { background: #c9f266; color: #0c1f0e; border: none; padding: 13px 28px; font-size: 15px; font-weight: 800; border-radius: 8px; cursor: pointer; display: inline-block; margin: 4px; }
+footer { background: #0c1f0e; color: #666; padding: 32px 24px; text-align: center; font-size: 13px; margin-top: 48px; }
+footer a { color: #c9f266; }
+.footer-logo { font-size: 18px; font-weight: 800; color: #fff; margin-bottom: 10px; }
+.footer-links { display: flex; gap: 20px; justify-content: center; margin-bottom: 12px; flex-wrap: wrap; }
+.city-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px; margin: 16px 0; }
+.city-link { background: #f5f5f5; border-radius: 8px; padding: 11px 14px; font-size: 13px; display: flex; justify-content: space-between; align-items: center; border: 1px solid transparent; }
+.city-link:hover { background: #f0ffd8; border-color: #c9f266; color: #0c1f0e; }
+.stats-bar { display: flex; gap: 24px; flex-wrap: wrap; background: #fafff0; border: 1px solid #d4eaa0; border-radius: 12px; padding: 22px 28px; margin: 24px 0; }
+.stat-item { text-align: center; flex: 1; min-width: 120px; }
+.stat-num { font-size: 32px; font-weight: 900; color: #0c1f0e; }
+.stat-label { font-size: 13px; color: #555; margin-top: 4px; }
+.faq-section { margin: 36px 0; }
+.faq-item { border: 1px solid #e8e8e8; border-radius: 10px; padding: 18px 22px; margin-bottom: 12px; }
+.faq-item h3 { font-size: 16px; font-weight: 700; color: #0c1f0e; margin-bottom: 8px; }
+.faq-item p { font-size: 14px; color: #555; line-height: 1.7; }
+.states-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 8px; margin: 16px 0; }
+.state-link { background: #f5f5f5; border-radius: 8px; padding: 11px 14px; font-size: 13px; display: flex; justify-content: space-between; align-items: center; border: 1px solid transparent; }
+.state-link:hover { background: #f0ffd8; border-color: #c9f266; color: #0c1f0e; }
+.state-count { font-size: 11px; color: #aaa; }
+.hamburger-btn { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; background: none; border: none; }
+.hamburger-btn span { display: block; width: 22px; height: 2px; background: #fff; border-radius: 2px; }
+@media (max-width: 640px) {
+  .site-header { padding: 12px 16px; }
+  .hamburger-btn { display: flex; }
+  .nav-links { display: none; flex-direction: column; position: absolute; top: 56px; left: 0; right: 0; background: #0c1f0e; padding: 16px 24px; gap: 14px; z-index: 100; }
+  .nav-links.nav-open { display: flex; }
+  .logo { font-size: 18px; }
+  .container { padding: 0 14px; }
+  .stats-bar { gap: 16px; padding: 16px; }
+  .city-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+}"""
+
+HEADER = """<header class="site-header" style="position:relative">
+  <a href="/" class="logo" style="text-decoration:none">⛳ Sim<span class="accent">Find</span></a>
+  <nav class="nav-links" id="main-nav">
+    <a href="/">Find a Sim</a>
+    <a href="/brands">Simulator Brands</a>
+    <a href="/leagues">Leagues</a>
+    <a href="/about">About</a>
+    <a href="/submit" class="nav-cta">Submit a Venue</a>
+  </nav>
+  <button class="hamburger-btn" id="hamburger-btn" aria-label="Toggle navigation" onclick="document.getElementById('main-nav').classList.toggle('nav-open')">
+    <span></span><span></span><span></span>
+  </button>
+</header>"""
+
+FOOTER = """<footer>
+  <div class="footer-logo">⛳ SimFind by IndoorGolfFinders.com</div>
+  <div class="footer-links">
+    <a href="/">Home</a>
+    <a href="/about">About</a>
+    <a href="/submit">Submit a Venue</a>
+    <a href="/claim">Claim Your Listing</a>
+    <a href="/brands">Simulator Guide</a>
+    <a href="/leagues">Leagues</a>
+    <a href="/privacy">Privacy</a>
+  </div>
+  <p>© 2026 SimFind — IndoorGolfFinders.com · The most detailed indoor golf simulator directory in the US</p>
+</footer>"""
+
+GA_ADSENSE = """<link rel="preconnect" href="https://pagead2.googlesyndication.com">
+<link rel="preconnect" href="https://www.googletagmanager.com">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7066928956398194" crossorigin="anonymous"></script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-17RNYD79LP"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-17RNYD79LP');
+</script>"""
+
+def get_city_display_name(slug):
+    """Convert city slug to display name."""
+    return slug.replace('-', ' ').title()
+
+def get_state_data(state_code):
+    """Count venues and cities for a state."""
+    state_path = os.path.join(VENUES_DIR, state_code)
+    if not os.path.isdir(state_path):
+        return 0, 0, []
+
+    venue_count = 0
+    cities = []
+
+    for entry in sorted(os.listdir(state_path)):
+        entry_path = os.path.join(state_path, entry)
+        if not os.path.isdir(entry_path):
+            continue
+        idx = os.path.join(entry_path, 'index.html')
+        if not os.path.exists(idx):
+            continue
+        with open(idx, 'r', encoding='utf-8') as f:
+            content = f.read(500)
+        title_m = re.search(r'<title>([^<]+)</title>', content)
+        if title_m and 'Golf Simulators in' in title_m.group(1):
+            cities.append(entry)
+        else:
+            venue_count += 1
+
+    return venue_count, len(cities), cities
+
+def generate_state_page(state_code, state_name, venue_count, city_count, cities):
+    """Generate HTML for a state hub page."""
+    state_upper = state_code.upper()
+    url = f"https://indoorgolffinders.com/states/{state_code}"
+
+    # Build city grid
+    city_links = ""
+    for city_slug in sorted(cities):
+        city_display = get_city_display_name(city_slug)
+        city_links += f'<a href="/venues/{state_code}/{city_slug}" class="city-link">{city_display}</a>\n'
+
+    # FAQ questions for the state
+    faq_q1 = f"How many indoor golf simulator venues are in {state_name}?"
+    faq_a1 = f"SimFind lists {venue_count} indoor golf simulator venues across {state_name}. These span {city_count} cities and include dedicated golf bays, simulator bars, golf lounges, and training facilities."
+
+    faq_q2 = f"What are the most popular golf simulator brands in {state_name}?"
+    faq_a2 = f"The most common commercial golf simulator brands found in {state_name} venues include TrackMan, Full Swing, Foresight GCQuad, SkyTrak, and X-Golf. Availability varies by venue — check individual listings on SimFind for confirmed simulator brand information."
+
+    faq_q3 = f"How much does it cost to use a golf simulator in {state_name}?"
+    faq_a3 = f"Golf simulator rentals in {state_name} typically range from $25 to $60 per hour per bay. Many venues offer membership plans for frequent players. Prices vary by simulator brand, time of day, and specific location."
+
+    # Breadcrumb schema
+    breadcrumb_schema = {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://indoorgolffinders.com/"},
+            {"@type": "ListItem", "position": 2, "name": "States", "item": "https://indoorgolffinders.com/states/"},
+            {"@type": "ListItem", "position": 3, "name": f"Golf Simulators in {state_name}", "item": url}
+        ]
+    }
+
+    dataset_schema = {
+        "@context": "https://schema.org",
+        "@type": "Dataset",
+        "name": f"Golf Simulator Venues in {state_name}",
+        "description": f"A dataset of {venue_count} indoor golf simulator venues in {state_name}, including location, simulator brand, pricing, and amenity data.",
+        "url": url,
+        "creator": {
+            "@type": "Organization",
+            "name": "IndoorGolfFinders.com",
+            "url": "https://indoorgolffinders.com"
+        },
+        "spatialCoverage": {
+            "@type": "Place",
+            "name": state_name,
+            "address": {
+                "@type": "PostalAddress",
+                "addressRegion": state_upper,
+                "addressCountry": "US"
+            }
+        },
+        "keywords": f"golf simulator, indoor golf, {state_name}, {state_upper}"
+    }
+
+    html = f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Golf Simulators in {state_name} | SimFind — {venue_count} Venues</title>
+<meta name="description" content="Find {venue_count} indoor golf simulator venues across {city_count} cities in {state_name}. Compare simulator brands, pricing, and amenities at SimFind.">
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+<meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
+<meta name="robots" content="index,follow">
+<meta name="google-site-verification" content="OwYaI_vjheyUrXkuilQ4zMuTZ-ufeS139zT0FQqV2s4">
+<link rel="canonical" href="{url}">
+<meta property="og:title" content="Golf Simulators in {state_name} | SimFind — {venue_count} Venues">
+<meta property="og:description" content="Find {venue_count} indoor golf simulator venues across {state_name}. Compare simulator brands, pricing, and amenities.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="{url}">
+<meta property="og:image" content="https://indoorgolffinders.com/images/og-image.jpg">
+{GA_ADSENSE}
+<script type="application/ld+json">
+{json.dumps(breadcrumb_schema, indent=2)}
+</script>
+<script type="application/ld+json">
+{json.dumps(dataset_schema, indent=2)}
+</script>
+<style>
+{CSS}
+</style>
+</head>
+<body>
+{HEADER}
+<div class="ad-slot"><!-- ADSENSE_SLOT_TOP --> Advertisement</div>
+
+<div class="container">
+  <div class="breadcrumb"><a href="/">Home</a><span>›</span><a href="/states/">States</a><span>›</span>{state_name}</div>
+
+  <h1 style="font-size:36px;font-weight:900;color:#0c1f0e;margin:24px 0 8px;letter-spacing:-0.5px">Golf Simulators in {state_name}</h1>
+  <p style="font-size:16px;color:#555;margin-bottom:24px">{venue_count} indoor golf simulator venues across {city_count} cities in {state_name}. Find the right simulator for your game.</p>
+
+  <div class="stats-bar">
+    <div class="stat-item">
+      <div class="stat-num">{venue_count}</div>
+      <div class="stat-label">Total Venues</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">{city_count}</div>
+      <div class="stat-label">Cities with Venues</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">$25–$60</div>
+      <div class="stat-label">Typical Hourly Rate</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">46</div>
+      <div class="stat-label">States in Directory</div>
+    </div>
+  </div>
+
+  <div style="margin:28px 0">
+    <a href="/venues/{state_code}" class="cta-btn" style="background:#0c1f0e;color:#c9f266;padding:12px 24px;border-radius:8px;font-weight:700;font-size:14px;display:inline-block">Browse All {state_name} Venues →</a>
+  </div>
+
+  <div class="section-header" style="margin-top:32px">
+    <h2>Browse by City</h2>
+    <span class="section-meta">{city_count} cities</span>
+  </div>
+  <div class="city-grid">
+{city_links}  </div>
+
+  <div class="faq-section">
+    <div class="section-header">
+      <h2>Frequently Asked Questions</h2>
+    </div>
+    <div class="faq-item">
+      <h3>{faq_q1}</h3>
+      <p>{faq_a1}</p>
+    </div>
+    <div class="faq-item">
+      <h3>{faq_q2}</h3>
+      <p>{faq_a2}</p>
+    </div>
+    <div class="faq-item">
+      <h3>{faq_q3}</h3>
+      <p>{faq_a3}</p>
+    </div>
+  </div>
+
+  <div class="cta-box">
+    <h3>Find a Golf Simulator in {state_name}</h3>
+    <p>Search by city or browse all {venue_count} {state_name} venues</p>
+    <a href="/venues/{state_code}" class="cta-btn">View All {state_name} Venues</a>
+    <a href="/submit" class="cta-btn" style="background:transparent;border:2px solid #c9f266;margin-left:8px">Submit a Venue</a>
+  </div>
+</div>
+
+{FOOTER}
+</body>
+</html>"""
+
+    return html
+
+
+def generate_states_index(all_states_data):
+    """Generate /states/index.html listing all states."""
+    state_links = ""
+    for state_code, data in sorted(all_states_data.items(), key=lambda x: STATE_NAMES[x[0]]):
+        state_name = STATE_NAMES[state_code]
+        venue_count = data['venues']
+        state_links += f'<a href="/states/{state_code}/" class="state-link">{state_name} <span class="state-count">{venue_count} venues</span></a>\n'
+
+    total_venues = sum(d['venues'] for d in all_states_data.values())
+
+    breadcrumb_schema = {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://indoorgolffinders.com/"},
+            {"@type": "ListItem", "position": 2, "name": "States", "item": "https://indoorgolffinders.com/states/"}
+        ]
+    }
+
+    html = f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Golf Simulators by State | SimFind — {total_venues}+ Venues Nationwide</title>
+<meta name="description" content="Browse indoor golf simulator venues by state. SimFind lists {total_venues}+ venues across 46 states with simulator brand, pricing, and amenity data.">
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+<meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
+<meta name="robots" content="index,follow">
+<meta name="google-site-verification" content="OwYaI_vjheyUrXkuilQ4zMuTZ-ufeS139zT0FQqV2s4">
+<link rel="canonical" href="https://indoorgolffinders.com/states/">
+<meta property="og:title" content="Golf Simulators by State | SimFind">
+<meta property="og:description" content="Browse indoor golf simulator venues by state. {total_venues}+ venues listed nationwide.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://indoorgolffinders.com/states/">
+<meta property="og:image" content="https://indoorgolffinders.com/images/og-image.jpg">
+{GA_ADSENSE}
+<script type="application/ld+json">
+{json.dumps(breadcrumb_schema, indent=2)}
+</script>
+<style>
+{CSS}
+</style>
+</head>
+<body>
+{HEADER}
+<div class="ad-slot"><!-- ADSENSE_SLOT_TOP --> Advertisement</div>
+
+<div class="container">
+  <div class="breadcrumb"><a href="/">Home</a><span>›</span>States</div>
+
+  <h1 style="font-size:36px;font-weight:900;color:#0c1f0e;margin:24px 0 8px;letter-spacing:-0.5px">Golf Simulators by State</h1>
+  <p style="font-size:16px;color:#555;margin-bottom:24px">Browse {total_venues}+ indoor golf simulator venues across 46 states. Find simulator bars, golf lounges, and training facilities near you.</p>
+
+  <div class="section-header">
+    <h2>All States</h2>
+    <span class="section-meta">46 states covered</span>
+  </div>
+  <div class="states-grid">
+{state_links}  </div>
+
+  <div class="cta-box" style="margin-top:40px">
+    <h3>Can't find your city?</h3>
+    <p>Submit a new venue or search by city name directly</p>
+    <a href="/" class="cta-btn">Search by City</a>
+    <a href="/submit" class="cta-btn" style="background:transparent;border:2px solid #c9f266;margin-left:8px">Submit a Venue</a>
+  </div>
+</div>
+
+{FOOTER}
+</body>
+</html>"""
+
+    return html
+
+
+# Main execution
+print("Generating state hub pages...")
+os.makedirs(STATES_DIR, exist_ok=True)
+
+all_states_data = {}
+pages_created = 0
+
+for state_code, state_name in sorted(STATE_NAMES.items()):
+    venue_count, city_count, cities = get_state_data(state_code)
+    all_states_data[state_code] = {'venues': venue_count, 'cities': city_count}
+
+    # Create state directory
+    state_dir = os.path.join(STATES_DIR, state_code)
+    os.makedirs(state_dir, exist_ok=True)
+
+    # Generate page
+    html = generate_state_page(state_code, state_name, venue_count, city_count, cities)
+
+    out_path = os.path.join(state_dir, 'index.html')
+    with open(out_path, 'w', encoding='utf-8') as f:
+        f.write(html)
+
+    pages_created += 1
+    print(f"  Created /states/{state_code}/ — {venue_count} venues, {city_count} cities")
+
+# Generate /states/index.html
+index_html = generate_states_index(all_states_data)
+index_path = os.path.join(STATES_DIR, 'index.html')
+with open(index_path, 'w', encoding='utf-8') as f:
+    f.write(index_html)
+
+print(f"\nDone! Created {pages_created} state hub pages + /states/index.html")
+print(f"Total venues indexed: {sum(d['venues'] for d in all_states_data.values())}")
