@@ -168,9 +168,48 @@ footer a { color: #c9f266; }
         <label style="display:block;font-size:13px;font-weight:700;color:#333;margin-bottom:6px">Business Email *</label>
         <input type="email" name="_replyto" required placeholder="you@yourvenue.com" style="width:100%;padding:12px 14px;border:1.5px solid #ddd;border-radius:8px;font-size:14px;outline:none">
       </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+        <div>
+          <label style="display:block;font-size:13px;font-weight:700;color:#333;margin-bottom:6px">Phone Number</label>
+          <input type="tel" name="phone" placeholder="(561) 555-0100" style="width:100%;padding:12px 14px;border:1.5px solid #ddd;border-radius:8px;font-size:14px;outline:none">
+        </div>
+        <div>
+          <label style="display:block;font-size:13px;font-weight:700;color:#333;margin-bottom:6px">Website</label>
+          <input type="url" name="website" placeholder="https://yoursite.com" style="width:100%;padding:12px 14px;border:1.5px solid #ddd;border-radius:8px;font-size:14px;outline:none">
+        </div>
+      </div>
       <div>
-        <label style="display:block;font-size:13px;font-weight:700;color:#333;margin-bottom:6px">Anything you'd like to update or add?</label>
-        <textarea name="details" rows="4" placeholder="Hours, simulator brand, pricing, photos, amenities..." style="width:100%;padding:12px 14px;border:1.5px solid #ddd;border-radius:8px;font-size:14px;outline:none;resize:vertical"></textarea>
+        <label style="display:block;font-size:13px;font-weight:700;color:#333;margin-bottom:6px">Booking Link (if different from website)</label>
+        <input type="url" name="booking_link" placeholder="https://book.yoursite.com" style="width:100%;padding:12px 14px;border:1.5px solid #ddd;border-radius:8px;font-size:14px;outline:none">
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+        <div>
+          <label style="display:block;font-size:13px;font-weight:700;color:#333;margin-bottom:6px">Simulator Brand</label>
+          <select name="sim_brand" style="width:100%;padding:12px 14px;border:1.5px solid #ddd;border-radius:8px;font-size:14px;outline:none;background:#fff">
+            <option value="">Select if known</option>
+            <option>TrackMan</option>
+            <option>Full Swing</option>
+            <option>Foresight GCQuad</option>
+            <option>Foresight GCHawk</option>
+            <option>SkyTrak</option>
+            <option>Bushnell Launch Pro</option>
+            <option>Uneekor</option>
+            <option>Golfzon</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div>
+          <label style="display:block;font-size:13px;font-weight:700;color:#333;margin-bottom:6px">Number of Bays / Simulators</label>
+          <input type="number" name="num_bays" min="1" max="50" placeholder="e.g. 4" style="width:100%;padding:12px 14px;border:1.5px solid #ddd;border-radius:8px;font-size:14px;outline:none">
+        </div>
+      </div>
+      <div>
+        <label style="display:block;font-size:13px;font-weight:700;color:#333;margin-bottom:6px">Hours of Operation</label>
+        <input type="text" name="hours" placeholder="e.g. Mon-Fri 10am-10pm, Sat-Sun 9am-11pm" style="width:100%;padding:12px 14px;border:1.5px solid #ddd;border-radius:8px;font-size:14px;outline:none">
+      </div>
+      <div>
+        <label style="display:block;font-size:13px;font-weight:700;color:#333;margin-bottom:6px">Anything else you'd like to add?</label>
+        <textarea name="details" rows="3" placeholder="Pricing, food and drinks, leagues, lessons, events..." style="width:100%;padding:12px 14px;border:1.5px solid #ddd;border-radius:8px;font-size:14px;outline:none;resize:vertical"></textarea>
       </div>
       <input type="hidden" name="_subject" value="Claim Listing Request — SimFind">
       <button type="submit" style="background:#c9f266;color:#0c1f0e;border:none;padding:14px 28px;font-size:15px;font-weight:800;border-radius:8px;cursor:pointer;width:100%">Submit Claim Request →</button>
