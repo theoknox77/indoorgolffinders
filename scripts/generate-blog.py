@@ -141,23 +141,20 @@ def slugify(title: str) -> str:
 
 
 def call_roseanne(prompt: str) -> str:
-    """Generate blog content via Claude API (haiku — fast + high quality)."""
-    import anthropic
-    api_key = os.environ.get("ANTHROPIC_API_KEY")
-    if not api_key:
-        # Fall back to Ollama 3b if no key
-        result = subprocess.run(
-            ["python3", ROSEANNE, "--model", "3b", prompt],
-            capture_output=True, text=True, timeout=120,
-        )
-        return result.stdout.strip()
-    client = anthropic.Anthropic(api_key=api_key)
-    msg = client.messages.create(
-        model="claude-haiku-4-5",
-        max_tokens=1200,
-        messages=[{"role": "user", "content": prompt}],
+    """Generate blog content via Mac (Nemotron-3-Super via Ollama cloud — free)."""
+    MAC = os.path.expanduser("~/.openclaw/workspace/scripts/mac.py")
+    result = subprocess.run(
+        ["python3", MAC, prompt],
+        capture_output=True, text=True, timeout=300,
     )
-    return msg.content[0].text.strip()
+    if result.returncode == 0 and result.stdout.strip():
+        return result.stdout.strip()
+    # Fallback to Roseanne 8b if Mac fails
+    result = subprocess.run(
+        ["python3", ROSEANNE, "--model", "8b", prompt],
+        capture_output=True, text=True, timeout=180,
+    )
+    return result.stdout.strip()
 
 
 def make_meta_description(topic: str) -> str:
