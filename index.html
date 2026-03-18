@@ -9,125 +9,240 @@
 <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
 <meta name="robots" content="index,follow">
 <meta name="google-site-verification" content="OwYaI_vjheyUrXkuilQ4zMuTZ-ufeS139zT0FQqV2s4">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="canonical" href="https://indoorgolffinders.com/">
 <meta property="og:title" content="Golf Simulators Near Me | Find Indoor Golf — SimFind">
 <meta property="og:description" content="Find the best golf simulator venues near you. 2,406+ indoor golf locations listed nationwide with simulator brand, pricing, hours, and amenities.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://indoorgolffinders.com/">
 <meta property="og:image" content="https://indoorgolffinders.com/images/og-image.jpg">
-<style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: #1a1a1a; background: #fff; line-height: 1.5; }
-a { color: inherit; text-decoration: none; }
-.site-header { background: #0c1f0e; padding: 14px 32px; display: flex; align-items: center; justify-content: space-between; }
-.logo { color: #fff; font-size: 22px; font-weight: 800; }
-.logo .accent { color: #c9f266; }
-.nav-links { display: flex; gap: 20px; align-items: center; }
-.nav-links a { color: rgba(255,255,255,0.75); font-size: 14px; }
-.nav-links a:hover { color: #fff; }
-.nav-cta { background: #c9f266 !important; color: #0c1f0e !important; font-weight: 700 !important; padding: 7px 16px; border-radius: 6px; font-size: 13px !important; }
-.ad-slot { background: #f8f8f8; border-bottom: 1px solid #eee; text-align: center; padding: 12px; font-size: 11px; color: #bbb; text-transform: uppercase; letter-spacing: 0.5px; min-height: 90px; }
-.container { max-width: 920px; margin: 0 auto; padding: 0 20px; }
-.breadcrumb { font-size: 13px; color: #888; padding: 14px 0 0; }
-.breadcrumb a { color: #2a6e1e; }
-.breadcrumb span { margin: 0 6px; }
-.venue-card { border: 1px solid #e8e8e8; border-radius: 12px; padding: 20px 22px; display: grid; grid-template-columns: 44px 1fr auto; gap: 0 16px; align-items: start; transition: box-shadow 0.15s, border-color 0.15s; margin-bottom: 12px; }
-.venue-card:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.08); border-color: #c9f266; }
-.venue-card.featured { border-color: #c9f266; background: #fafff0; }
-.rank-badge { width: 36px; height: 36px; border-radius: 8px; background: #0c1f0e; color: #c9f266; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; flex-shrink: 0; margin-top: 2px; }
-.rank-badge.gold { background: #c9f266; color: #0c1f0e; }
-.venue-name { font-size: 17px; font-weight: 800; color: #0c1f0e; }
-.venue-top { display: flex; align-items: baseline; gap: 10px; margin-bottom: 4px; flex-wrap: wrap; }
-.badge { font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.3px; }
-.badge-chain { background: #e8f0ff; color: #1a3a8e; }
-.badge-new { background: #fff0e0; color: #b85c00; }
-.venue-address { font-size: 13px; color: #777; margin-bottom: 10px; }
-.chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
-.chip { display: inline-flex; align-items: center; gap: 4px; border-radius: 10px; padding: 3px 10px; font-size: 12px; font-weight: 500; }
-.chip-green { background: #f3f8e8; border: 1px solid #d8ecb0; color: #2a5010; }
-.chip-blue { background: #e8f0ff; border: 1px solid #b0c8ff; color: #1a3a8e; }
-.chip-orange { background: #fff3e0; border: 1px solid #ffd09a; color: #a04a00; }
-.chip-yellow { background: #fff8e0; border: 1px solid #fce57a; color: #7a5c00; }
-.venue-details { font-size: 12px; color: #888; margin-bottom: 8px; }
-.venue-actions { display: flex; flex-direction: column; gap: 8px; align-items: flex-end; min-width: 110px; }
-.price-tag { font-size: 14px; font-weight: 800; color: #0c1f0e; text-align: right; }
-.price-sub { font-size: 11px; color: #aaa; text-align: right; }
-.btn-primary { background: #c9f266; color: #0c1f0e; border-radius: 8px; padding: 8px 16px; font-size: 13px; font-weight: 700; white-space: nowrap; text-align: center; display: inline-block; }
-.btn-secondary { border: 1.5px solid #ddd; color: #444; border-radius: 8px; padding: 7px 14px; font-size: 12px; white-space: nowrap; text-align: center; display: inline-block; }
-.btn-secondary:hover { border-color: #0c1f0e; color: #0c1f0e; }
-.section-header { display: flex; align-items: baseline; justify-content: space-between; border-bottom: 3px solid #0c1f0e; padding-bottom: 10px; margin: 36px 0 14px; }
-.section-header h2 { font-size: 24px; font-weight: 900; }
-.section-meta { font-size: 13px; color: #777; }
-.section-intro { font-size: 14px; color: #555; margin-bottom: 18px; line-height: 1.7; }
-.inline-ad { background: #f9f9f9; border: 1px dashed #ddd; border-radius: 10px; text-align: center; padding: 22px; font-size: 11px; color: #ccc; margin: 28px 0; text-transform: uppercase; letter-spacing: 0.5px; min-height: 250px; }
-.cta-box { background: linear-gradient(135deg, #0c1f0e 0%, #1a3d1e 100%); color: #fff; border-radius: 14px; padding: 32px 36px; text-align: center; margin: 40px 0; }
-.cta-box h3 { font-size: 22px; font-weight: 900; margin-bottom: 8px; }
-.cta-box p { font-size: 14px; opacity: 0.75; margin-bottom: 22px; }
-.cta-btn { background: #c9f266; color: #0c1f0e; border: none; padding: 13px 28px; font-size: 15px; font-weight: 800; border-radius: 8px; cursor: pointer; display: inline-block; margin: 4px; }
-footer { background: #0c1f0e; color: #666; padding: 32px 24px; text-align: center; font-size: 13px; margin-top: 48px; }
-footer a { color: #c9f266; }
-.footer-logo { font-size: 18px; font-weight: 800; color: #fff; margin-bottom: 10px; }
-.footer-links { display: flex; gap: 20px; justify-content: center; margin-bottom: 12px; flex-wrap: wrap; }
-.states-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 8px; margin: 16px 0; }
-.state-link { background: #f5f5f5; border-radius: 8px; padding: 11px 14px; font-size: 13px; display: flex; justify-content: space-between; align-items: center; border: 1px solid transparent; }
-.state-link:hover { background: #f0ffd8; border-color: #c9f266; color: #0c1f0e; }
-.state-count { font-size: 11px; color: #aaa; }
-.toc { background: #fafff0; border: 1px solid #d4eaa0; border-radius: 12px; padding: 22px 26px; margin: 28px 0; }
-.toc-title { font-size: 13px; font-weight: 700; color: #2a5010; margin-bottom: 14px; text-transform: uppercase; letter-spacing: 0.5px; }
-.toc-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 3px 20px; }
-.toc-grid a { color: #2a6e1e; font-size: 13px; line-height: 2.1; }
-.toc-grid a:hover { text-decoration: underline; }
+<style>*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-.hamburger-btn { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; background: none; border: none; }
-.hamburger-btn span { display: block; width: 22px; height: 2px; background: #fff; border-radius: 2px; }
-
-@media (max-width: 640px) {
-  .site-header { padding: 12px 16px; }
-
-  .hamburger-btn { display: flex; }
-  .nav-links { display: none; flex-direction: column; position: absolute; top: 56px; left: 0; right: 0; background: #0c1f0e; padding: 16px 24px; gap: 14px; z-index: 100; }
-  .nav-links.nav-open { display: flex; }
-  .nav-mobile-cta { display: inline-block !important; }
-  .logo { font-size: 18px; }
-  .container { padding: 0 14px; }
-  .venue-card { grid-template-columns: 36px 1fr; gap: 0 12px; padding: 14px; }
-  .venue-actions { grid-column: 1 / -1; flex-direction: row; align-items: center; justify-content: space-between; min-width: unset; margin-top: 10px; padding-top: 10px; border-top: 1px solid #eee; }
-  .price-tag, .price-sub { text-align: left; }
-  .venue-name { font-size: 15px; }
-  .section-header h2 { font-size: 20px; }
-  .toc-grid { grid-template-columns: 1fr 1fr; gap: 2px 12px; }
-  .cta-box { padding: 22px 18px; }
-  .cta-box h3 { font-size: 18px; }
-  .hero-stats-row { flex-direction: column !important; gap: 20px !important; }
-  .hero-search-form input { font-size: 14px !important; padding: 13px 14px !important; }
-  .hero-title { font-size: 30px !important; }
-  .states-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
-  .brands-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)) !important; }
-  h1 { font-size: 22px !important; }
-  /* FIX 5: Mobile search bar — stack input + button */
-  .hero-search-form { flex-wrap: wrap !important; overflow: visible !important; }
-  .hero-search-form input { flex: 1 1 auto !important; border-radius: 10px 10px 0 0 !important; }
-  .hero-search-form .location-btn { border-radius: 0 10px 0 0 !important; background: #fff; border-left: 1px solid #eee; }
-  .hero-search-form button[type=submit] { flex: 1 1 100% !important; border-radius: 0 0 10px 10px !important; justify-content: center; }
-  /* FIX 6: Mobile stats — 2×2 grid */
-  .hero-stats-row { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 24px 32px !important; justify-items: center; }
+:root {
+  --green-deep:   #0a1a0c;
+  --green-dark:   #0f2412;
+  --green-mid:    #1a3d1e;
+  --green-light:  #254d28;
+  --lime:         #c9f266;
+  --lime-dark:    #a8d44a;
+  --white:        #ffffff;
+  --off-white:    #f7f9f4;
+  --gray-100:     #f4f6f2;
+  --gray-200:     #e8ece4;
+  --gray-400:     #9aaa8e;
+  --gray-600:     #5a6b54;
+  --text-dark:    #111810;
+  --text-body:    #3a4838;
+  --radius-sm:    8px;
+  --radius-md:    12px;
+  --radius-lg:    16px;
+  --shadow-sm:    0 2px 8px rgba(0,0,0,0.06);
+  --shadow-md:    0 6px 24px rgba(0,0,0,0.10);
 }
 
-/* FIX 1: Filter tags wrap + right-side fade gradient scroll affordance */
-.filter-tags-row { position: relative; }
-.filter-tags-row > div { flex-wrap: wrap !important; overflow-x: auto; }
-.filter-tags-row::after { content: ''; position: absolute; right: 0; top: 0; bottom: 0; width: 60px; background: linear-gradient(to right, transparent, #fff); pointer-events: none; }
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: var(--text-body);
+  background: #fff;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
 
-/* FIX 2: Hide empty ad slots */
-.ad-slot:empty { display: none; }
+a { color: inherit; text-decoration: none; }
+h1, h2, h3, h4 { font-family: 'Playfair Display', Georgia, serif; color: var(--text-dark); line-height: 1.2; }
 
-/* FIX 4: Intro paragraph readable max-width */
-.intro-paragraph { max-width: 720px; margin-left: auto !important; margin-right: auto !important; }
+/* NAVBAR */
+.site-header {
+  background: var(--green-deep) !important;
+  padding: 0 32px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  height: 64px !important;
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 100 !important;
+  border-bottom: 1px solid rgba(201,242,102,0.12) !important;
+}
 
-/* Location button */
-.location-btn { background: #fff; border: none; cursor: pointer; font-size: 18px; padding: 0 14px; line-height: 1; opacity: 0.65; transition: opacity 0.15s; flex-shrink: 0; }
-.location-btn:hover { opacity: 1; }
-</style>
+.logo {
+  font-family: 'Playfair Display', serif !important;
+  font-size: 20px !important;
+  font-weight: 900 !important;
+  color: var(--white) !important;
+}
+
+.logo .accent { color: var(--lime) !important; }
+
+.nav-links { display: flex; gap: 24px; align-items: center; list-style: none; }
+.nav-links a { color: rgba(255,255,255,0.7) !important; font-size: 14px; font-weight: 500; transition: color 0.2s; }
+.nav-links a:hover { color: var(--lime) !important; }
+.nav-cta { background: var(--lime) !important; color: var(--green-deep) !important; font-weight: 700 !important; padding: 8px 18px !important; border-radius: var(--radius-sm) !important; font-size: 13px !important; }
+.nav-cta:hover { background: var(--lime-dark) !important; }
+
+/* HAMBURGER */
+.hamburger-btn { display: none; background: none; border: none; cursor: pointer; padding: 4px; }
+.hamburger-btn span { display: block; width: 22px; height: 2px; background: #fff; margin: 5px 0; border-radius: 2px; }
+@media (max-width: 768px) {
+  .hamburger-btn { display: block; }
+  .nav-links { display: none; position: absolute; top: 64px; left: 0; right: 0; background: var(--green-deep); flex-direction: column; padding: 20px; gap: 16px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+  .nav-links.nav-open { display: flex; }
+}
+
+/* AD SLOT */
+.ad-slot { background: var(--gray-100); border-bottom: 1px solid var(--gray-200); text-align: center; padding: 12px; font-size: 11px; color: #bbb; text-transform: uppercase; letter-spacing: 0.5px; min-height: 90px; display: flex; align-items: center; justify-content: center; }
+
+/* HERO */
+.hero-section {
+  background: linear-gradient(160deg, var(--green-deep) 0%, var(--green-mid) 55%, var(--green-light) 100%);
+  padding: 72px 24px 64px;
+  text-align: center;
+  color: var(--white);
+  position: relative;
+  overflow: hidden;
+}
+.hero-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(rgba(201,242,102,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(201,242,102,0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+}
+.hero-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(201,242,102,0.12); border: 1px solid rgba(201,242,102,0.28); color: var(--lime); font-size: 12px; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase; padding: 5px 14px; border-radius: 20px; margin-bottom: 22px; }
+.hero-title { font-size: 52px !important; font-weight: 900 !important; line-height: 1.1 !important; letter-spacing: -1.5px !important; color: var(--white) !important; margin-bottom: 18px !important; max-width: 680px; margin-left: auto; margin-right: auto; }
+.hero-title em { color: var(--lime); font-style: normal; }
+.hero-sub { font-size: 17px; opacity: 0.78; max-width: 520px; margin: 0 auto 36px; line-height: 1.65; font-weight: 400; }
+
+.hero-search-form { display: flex; background: #fff; border-radius: var(--radius-md); overflow: hidden; box-shadow: 0 8px 40px rgba(0,0,0,0.45); border: 1.5px solid rgba(201,242,102,0.25); max-width: 580px; margin: 0 auto; }
+.hero-search-form input { flex: 1; padding: 17px 20px; font-size: 15px; border: none; outline: none; color: var(--text-dark); }
+.hero-search-form input::placeholder { color: #aaa; }
+.location-btn { background: #f5f5f5; border: none; padding: 0 16px; font-size: 17px; cursor: pointer; border-left: 1px solid #eee; }
+.hero-search-form button[type=submit] { background: var(--lime) !important; color: var(--green-deep) !important; border: none; padding: 17px 26px; font-size: 15px; font-weight: 800; cursor: pointer; white-space: nowrap; }
+.hero-search-form button[type=submit]:hover { background: var(--lime-dark) !important; }
+
+.hero-stats-row { display: flex; justify-content: center; gap: 52px; margin-top: 36px; padding-top: 32px; border-top: 1px solid rgba(255,255,255,0.1); flex-wrap: wrap; }
+.hero-stats-row > div > div:first-child { font-family: 'Playfair Display', serif; font-size: 30px; font-weight: 900; color: var(--lime); }
+.hero-stats-row > div > div:last-child { font-size: 11px; opacity: 0.55; text-transform: uppercase; letter-spacing: 0.8px; margin-top: 2px; }
+
+/* TRUST BAR */
+.trust-bar { background: var(--off-white); border-bottom: 1px solid var(--gray-200); padding: 14px 24px; }
+.trust-bar-inner { max-width: 960px; margin: 0 auto; display: flex; justify-content: center; align-items: center; gap: 28px; flex-wrap: wrap; }
+.trust-item { display: flex; align-items: center; gap: 7px; font-size: 13px; font-weight: 600; color: var(--gray-600); }
+
+/* QUICK LINKS */
+.quick-links-bar { background: #fff; border-bottom: 1px solid var(--gray-200); padding: 14px 24px; overflow-x: auto; scrollbar-width: none; }
+.quick-links-bar::-webkit-scrollbar { display: none; }
+.quick-links-inner { display: flex; gap: 10px; max-width: 960px; margin: 0 auto; white-space: nowrap; }
+.quick-chip { background: var(--gray-100); border: 1px solid var(--gray-200); color: var(--text-body); font-size: 13px; font-weight: 500; padding: 7px 16px; border-radius: 20px; transition: all 0.18s; flex-shrink: 0; }
+.quick-chip:hover { background: var(--lime); border-color: var(--lime); color: var(--green-deep); font-weight: 600; }
+
+/* CONTAINER */
+.container { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+
+/* INTRO */
+.intro-paragraph { font-size: 15px; color: var(--gray-600); line-height: 1.8; padding: 32px 0 28px; border-bottom: 1px solid var(--gray-200); }
+
+/* FILTER TAGS */
+.filter-tags-row a { background: var(--gray-100) !important; border-color: var(--gray-200) !important; color: var(--text-body) !important; border-radius: 20px !important; transition: all 0.18s !important; }
+.filter-tags-row a:hover { background: var(--lime) !important; border-color: var(--lime) !important; color: var(--green-deep) !important; }
+
+/* TOC */
+.toc { background: var(--off-white) !important; border: 1.5px solid var(--gray-200) !important; border-radius: var(--radius-lg) !important; padding: 22px 26px !important; margin: 28px 0 !important; }
+.toc-title { font-size: 12px !important; font-weight: 700 !important; color: var(--gray-600) !important; margin-bottom: 14px !important; text-transform: uppercase !important; letter-spacing: 0.8px !important; }
+.toc-grid a { color: var(--green-mid) !important; font-size: 13px !important; }
+.toc-grid a:hover { text-decoration: underline !important; }
+
+/* SECTION HEADER */
+.section-header { display: flex; align-items: baseline; justify-content: space-between; border-bottom: 2px solid var(--green-deep) !important; padding-bottom: 12px; margin: 40px 0 14px; }
+.section-header h2 { font-size: 22px; font-weight: 900; font-family: 'Playfair Display', serif; }
+.section-meta { font-size: 13px; color: var(--gray-400); }
+.section-meta a { color: var(--green-mid) !important; font-weight: 600; }
+.section-intro { font-size: 14px; color: var(--gray-600); margin-bottom: 18px; line-height: 1.75; }
+
+/* VENUE CARDS */
+.venue-card { border: 1.5px solid var(--gray-200) !important; border-radius: var(--radius-lg) !important; padding: 20px 22px; display: grid; grid-template-columns: 44px 1fr auto; gap: 0 18px; align-items: start; margin-bottom: 12px; background: #fff; transition: box-shadow 0.2s, border-color 0.2s, transform 0.15s; }
+.venue-card:hover { box-shadow: var(--shadow-md) !important; border-color: var(--lime) !important; transform: translateY(-1px); }
+.venue-card.featured { border-color: var(--lime) !important; background: linear-gradient(135deg, #fafff5 0%, #fff 100%) !important; }
+
+.rank-badge { width: 38px; height: 38px; border-radius: 10px; background: var(--green-deep) !important; color: var(--lime) !important; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; flex-shrink: 0; margin-top: 2px; }
+.rank-badge.gold { background: var(--lime) !important; color: var(--green-deep) !important; }
+
+.venue-name { font-family: 'Playfair Display', serif !important; font-size: 17px !important; font-weight: 700 !important; color: var(--text-dark) !important; }
+.venue-top { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 4px; }
+.badge { font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.4px; }
+.badge-chain { background: #e8f0ff; color: #1a3a8e; }
+.badge-new { background: #fff0e0; color: #b85c00; }
+.venue-address { font-size: 13px; color: var(--gray-400); margin-bottom: 10px; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+.chip { display: inline-flex; align-items: center; gap: 4px; border-radius: 10px; padding: 3px 10px; font-size: 11px; font-weight: 600; }
+.chip-green { background: #eef7e4; border: 1px solid #cae89a; color: #2a5010; }
+.chip-blue  { background: #e8f0ff; border: 1px solid #b0c8ff; color: #1a3a8e; }
+.chip-orange { background: #fff3e0; border: 1px solid #ffd09a; color: #a04a00; }
+.chip-yellow { background: #fff8e0; border: 1px solid #fce57a; color: #7a5c00; }
+.venue-details { font-size: 12px; color: var(--gray-400); margin-bottom: 4px; }
+.venue-actions { display: flex; flex-direction: column; gap: 8px; align-items: flex-end; min-width: 110px; }
+.price-tag { font-size: 14px; font-weight: 800; color: var(--text-dark); text-align: right; }
+.price-sub { font-size: 11px; color: #aaa; text-align: right; }
+
+.btn-primary { background: var(--lime) !important; color: var(--green-deep) !important; border-radius: var(--radius-sm) !important; padding: 9px 16px !important; font-size: 13px !important; font-weight: 700 !important; white-space: nowrap; text-align: center; display: inline-block; transition: background 0.18s; }
+.btn-primary:hover { background: var(--lime-dark) !important; }
+.btn-secondary { border: 1.5px solid var(--gray-200) !important; color: var(--gray-600) !important; border-radius: var(--radius-sm) !important; padding: 8px 14px !important; font-size: 12px !important; white-space: nowrap; text-align: center; display: inline-block; transition: all 0.18s; }
+.btn-secondary:hover { border-color: var(--green-mid) !important; color: var(--green-mid) !important; }
+
+/* INLINE AD */
+.inline-ad { background: var(--gray-100); border: 1px dashed var(--gray-200); border-radius: var(--radius-md); text-align: center; padding: 24px; font-size: 11px; color: #ccc; letter-spacing: 0.5px; text-transform: uppercase; min-height: 250px; display: flex; align-items: center; justify-content: center; margin: 32px 0; }
+
+/* CTA BOX */
+.cta-box { background: linear-gradient(135deg, var(--green-mid) 0%, var(--green-deep) 100%) !important; border-radius: var(--radius-lg) !important; padding: 40px !important; border: 1px solid rgba(201,242,102,0.15); }
+.cta-box h3 { font-size: 26px; color: var(--white) !important; margin-bottom: 8px; }
+.cta-box p { font-size: 14px; color: rgba(255,255,255,0.7) !important; margin-bottom: 24px; }
+.cta-btn { background: var(--lime) !important; color: var(--green-deep) !important; padding: 13px 28px !important; font-size: 15px !important; font-weight: 800 !important; border-radius: var(--radius-sm) !important; display: inline-block; transition: background 0.2s; }
+.cta-btn:hover { background: var(--lime-dark) !important; }
+
+/* STATES */
+.states-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(175px, 1fr)); gap: 8px; margin: 16px 0; }
+.state-link { background: var(--gray-100); border: 1.5px solid var(--gray-200); border-radius: var(--radius-sm); padding: 11px 14px; font-size: 13px; font-weight: 500; display: flex; justify-content: space-between; align-items: center; transition: all 0.18s; color: var(--text-body); }
+.state-link:hover { background: #eef7e4 !important; border-color: var(--lime) !important; color: var(--green-deep) !important; font-weight: 600; }
+.state-count { font-size: 11px; color: var(--gray-400); }
+
+/* FOOTER */
+footer { background: var(--green-deep) !important; color: rgba(255,255,255,0.5) !important; padding: 48px 24px 28px !important; font-size: 13px !important; }
+.footer-logo { font-family: 'Playfair Display', serif !important; font-size: 20px !important; font-weight: 900 !important; color: var(--white) !important; margin-bottom: 10px; }
+.footer-links { display: flex; gap: 20px; justify-content: center; margin-bottom: 12px; flex-wrap: wrap; }
+.footer-links a { color: rgba(255,255,255,0.5) !important; transition: color 0.2s; }
+.footer-links a:hover { color: var(--lime) !important; }
+
+/* HOW IT WORKS */
+.how-section { background: var(--off-white); padding: 56px 24px; margin: 48px 0; }
+.how-inner { max-width: 960px; margin: 0 auto; text-align: center; }
+.how-inner h2 { font-size: 30px; margin-bottom: 10px; }
+.how-inner > p { font-size: 15px; color: var(--gray-600); margin-bottom: 40px; }
+.how-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+.how-card { background: #fff; border: 1.5px solid var(--gray-200); border-radius: var(--radius-lg); padding: 28px 24px; text-align: left; box-shadow: var(--shadow-sm); }
+.how-number { width: 36px; height: 36px; border-radius: 10px; background: var(--lime); color: var(--green-deep); display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 800; margin-bottom: 16px; }
+.how-card h3 { font-size: 16px; font-weight: 700; margin-bottom: 8px; font-family: 'Inter', sans-serif; }
+.how-card p { font-size: 13px; color: var(--gray-600); line-height: 1.65; margin: 0; }
+
+/* BRANDS */
+.brands-section { padding: 48px 24px; background: var(--green-deep); }
+.brands-inner { max-width: 960px; margin: 0 auto; }
+.brands-inner h2 { font-size: 28px; color: var(--white); margin-bottom: 8px; }
+.brands-inner p { font-size: 14px; color: rgba(255,255,255,0.6); margin-bottom: 32px; }
+.brands-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.brand-chip { background: rgba(255,255,255,0.06); border: 1px solid rgba(201,242,102,0.2); border-radius: var(--radius-md); padding: 16px 18px; display: flex; align-items: center; gap: 10px; color: rgba(255,255,255,0.85); font-size: 14px; font-weight: 600; transition: all 0.2s; }
+.brand-chip:hover { background: rgba(201,242,102,0.1); border-color: rgba(201,242,102,0.4); color: var(--lime); }
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .hero-title { font-size: 34px !important; }
+  .hero-stats-row { gap: 24px; }
+  .how-grid { grid-template-columns: 1fr; }
+  .brands-grid { grid-template-columns: repeat(2, 1fr); }
+  .venue-card { grid-template-columns: 36px 1fr; }
+  .venue-actions { display: none; }
+}</style>
 <link rel="preconnect" href="https://pagead2.googlesyndication.com">
 <link rel="preconnect" href="https://www.googletagmanager.com">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7066928956398194" crossorigin="anonymous"></script>
@@ -206,9 +321,10 @@ footer a { color: #c9f266; }
 </header>
 <div class="ad-slot"><!-- ADSENSE_SLOT_TOP --> Advertisement</div>
 
-<div style="background:linear-gradient(160deg,#0c1f0e 0%,#1a3d1e 60%,#254d28 100%);padding:60px 24px 52px;text-align:center;color:#fff">
+<div class="hero-section">
+  <div class="hero-badge">⛳ 2,406+ Venues Listed Nationwide</div>
   <div style="display:inline-block;background:rgba(201,242,102,0.15);border:1px solid rgba(201,242,102,0.3);color:#c9f266;font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:5px 14px;border-radius:20px;margin-bottom:18px">2,406+ Venues Listed Nationwide</div>
-  <h1 style="font-size:42px;font-weight:900;line-height:1.15;margin-bottom:14px;letter-spacing:-1px;color:#fff">Find Golf Simulators<br><em style="color:#c9f266;font-style:normal">Near You</em></h1>
+  <h1 class="hero-title">Find Golf Simulators<br><em>Near You</em></h1>
   <p style="font-size:17px;opacity:0.8;max-width:540px;margin:0 auto 32px;line-height:1.6">The most detailed indoor golf directory in the US — with simulator brand, pricing, bay count, food & drinks, and open hours for every venue.</p>
   <div style="max-width:560px;margin:0 auto">
     <form onsubmit="var q=this.querySelector('input').value.trim();if(q){var states={'alabama':'al','alaska':'ak','arizona':'az','arkansas':'ar','california':'ca','colorado':'co','connecticut':'ct','delaware':'de','florida':'fl','georgia':'ga','hawaii':'hi','idaho':'id','illinois':'il','indiana':'in','iowa':'ia','kansas':'ks','kentucky':'ky','louisiana':'la','maine':'me','maryland':'md','massachusetts':'ma','michigan':'mi','minnesota':'mn','mississippi':'ms','missouri':'mo','montana':'mt','nebraska':'ne','nevada':'nv','new hampshire':'nh','new jersey':'nj','new mexico':'nm','new york':'ny','north carolina':'nc','north dakota':'nd','ohio':'oh','oklahoma':'ok','oregon':'or','pennsylvania':'pa','rhode island':'ri','south carolina':'sc','south dakota':'sd','tennessee':'tn','texas':'tx','utah':'ut','vermont':'vt','virginia':'va','washington':'wa','west virginia':'wv','wisconsin':'wi','wyoming':'wy','dc':'dc','washington dc':'dc'};var ql=q.toLowerCase().trim();var slug=states[ql];if(slug){window.location='/venues/'+slug;}else{window.location='/venues?q='+encodeURIComponent(q);}}return false;" class="hero-search-form" style="display:flex;border-radius:12px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,0.4);border:1px solid rgba(201,242,102,0.2)">
@@ -225,6 +341,32 @@ footer a { color: #c9f266; }
   </div>
 </div>
 
+
+<div class="trust-bar">
+  <div class="trust-bar-inner">
+    <div class="trust-item"><span>✅</span> Verified Listings</div>
+    <div class="trust-item"><span>🗺️</span> GPS Directions on Every Venue</div>
+    <div class="trust-item"><span>📞</span> Phone Numbers Included</div>
+    <div class="trust-item"><span>🆓</span> 100% Free to Search</div>
+    <div class="trust-item"><span>🔄</span> Updated Weekly</div>
+  </div>
+</div>
+<div class="quick-links-bar">
+  <div class="quick-links-inner">
+    <a href="/venues/fl/miami" class="quick-chip">Miami, FL</a>
+    <a href="/venues/tx/dallas" class="quick-chip">Dallas, TX</a>
+    <a href="/venues/il/chicago" class="quick-chip">Chicago, IL</a>
+    <a href="/venues/ca/los-angeles" class="quick-chip">Los Angeles, CA</a>
+    <a href="/venues/ny/new-york" class="quick-chip">New York, NY</a>
+    <a href="/venues/fl/orlando" class="quick-chip">Orlando, FL</a>
+    <a href="/venues/tx/houston" class="quick-chip">Houston, TX</a>
+    <a href="/venues/az/phoenix" class="quick-chip">Phoenix, AZ</a>
+    <a href="/venues/nv/las-vegas" class="quick-chip">Las Vegas, NV</a>
+    <a href="/venues/wa/seattle" class="quick-chip">Seattle, WA</a>
+    <a href="/venues/co/denver" class="quick-chip">Denver, CO</a>
+    <a href="/venues/nc/charlotte" class="quick-chip">Charlotte, NC</a>
+  </div>
+</div>
 <div class="container">
   <p class="intro-paragraph" style="line-height:1.8;font-size:15px;color:#444;margin:32px 0 8px;padding-bottom:28px;border-bottom:1px solid #eee">
     Indoor golf simulators have exploded across the country — from dedicated golf lounges to bars with Trackman bays. SimFind tracks every type: walk-in friendly spots, reservation-only venues, budget options, and premium simulator setups. Filter by brand, price, food & drinks, and more.
