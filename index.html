@@ -50,7 +50,7 @@ body {
 }
 
 a { color: inherit; text-decoration: none; }
-h1, h2, h3, h4 { font-family: 'Playfair Display', Georgia, serif; color: var(--text-dark); line-height: 1.2; }
+h1, h2, h3, h4 { font-family: 'Playfair Display', Georgia, serif; color: var(--text-dark); line-height: 1.2; hyphens: none; -webkit-hyphens: none; word-break: normal; overflow-wrap: break-word; }
 
 /* NAVBAR */
 .site-header {
@@ -124,7 +124,7 @@ h1, h2, h3, h4 { font-family: 'Playfair Display', Georgia, serif; color: var(--t
   z-index: 1;
 }
 .hero-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(201,242,102,0.12); border: 1px solid rgba(201,242,102,0.28); color: var(--lime); font-size: 12px; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase; padding: 5px 14px; border-radius: 20px; margin-bottom: 22px; }
-.hero-title { font-size: 52px !important; font-weight: 900 !important; line-height: 1.1 !important; letter-spacing: -1.5px !important; color: var(--white) !important; margin-bottom: 18px !important; max-width: 680px; margin-left: auto; margin-right: auto; }
+.hero-title { font-size: 52px !important; font-weight: 900 !important; line-height: 1.1 !important; letter-spacing: -1.5px !important; color: var(--white) !important; margin-bottom: 18px !important; max-width: 680px; margin-left: auto; margin-right: auto; hyphens: none !important; -webkit-hyphens: none !important; word-break: keep-all !important; overflow-wrap: normal !important; }
 .hero-title em { color: var(--lime); font-style: normal; }
 .hero-sub { font-size: 17px; opacity: 0.78; max-width: 520px; margin: 0 auto 36px; line-height: 1.65; font-weight: 400; }
 
