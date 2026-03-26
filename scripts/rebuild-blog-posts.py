@@ -1,45 +1,51 @@
 #!/usr/bin/env python3
-"""IGF Blog Blitz — 2000 keyword-driven posts"""
-import json, os, re, time, sys
-import anthropic
+"""Rebuild all existing IGF blog posts with the new branded template.
+Reads body content from existing HTML files, wraps in new shell."""
+import os, re, json, datetime
 
 BASE     = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BLOG_DIR = os.path.join(BASE, "blog")
-os.makedirs(BLOG_DIR, exist_ok=True)
-CONFIG   = json.load(open("/Users/theoknox/workspace/active-owl/scripts/config.json"))
-client   = anthropic.Anthropic(api_key=CONFIG["anthropic_key"])
 SITE_URL = "https://www.indoorgolffinders.com"
 GA4_ID   = "G-17RNYD79LP"
 ADSENSE  = "ca-pub-7066928956398194"
-
-import datetime; date_str = datetime.date.today().strftime("%B %d, %Y")
-
-def slugify(s):
-    s = s.lower(); s = re.sub(r"[''']","",s); s = re.sub(r"[^a-z0-9]+"," ",s)
-    return s.strip().replace(" ","-")
-
-def write_post(title, category):
-    prompt = f"""Write a helpful, SEO-optimized blog post for IndoorGolfFinders.com — the #1 directory for finding indoor golf simulator venues across the US.
-
-Title: {title}
-Category: {category}
-
-Rules:
-- 600-800 words. Second person. Knowledgeable golf enthusiast tone.
-- Only mention real simulator brands: TrackMan, Full Swing, Foresight GCQuad, SkyTrak, Bushnell Launch Pro, Toptracer.
-- NO invented venue names.
-- NO em dashes. Structure with ## H2 headings (3-4 sections).
-- End with a CTA pointing to indoorgolffinders.com to find venues near them.
-- Practical, useful info a real golfer would value.
-
-Output: clean HTML body only. Use <h2>, <p>, <ul><li>, <strong> only. No inline styles."""
-    msg = client.messages.create(model="claude-haiku-4-5", max_tokens=1200,
-        messages=[{"role":"user","content":prompt}])
-    return msg.content[0].text
-
 AD_SLOT_TOP    = "2345678901"
 AD_SLOT_MID    = "3456789012"
 AD_SLOT_BOTTOM = "4567890123"
+date_str = datetime.date.today().strftime("%B %d, %Y")
+
+def extract_title(html):
+    m = re.search(r'<h1[^>]*>(.*?)</h1>', html, re.IGNORECASE|re.DOTALL)
+    if m:
+        t = re.sub(r'<[^>]+>','', m.group(1)).strip()
+        return t
+    m = re.search(r'<title>(.*?)\s*\|', html, re.IGNORECASE)
+    if m: return m.group(1).strip()
+    return "Indoor Golf Guide"
+
+def extract_body(html):
+    # Try <article> first
+    m = re.search(r'<article[^>]*>(.*?)</article>', html, re.IGNORECASE|re.DOTALL)
+    if m: body = m.group(1).strip()
+    else:
+        # Try <main>
+        m = re.search(r'<main[^>]*>(.*?)</main>', html, re.IGNORECASE|re.DOTALL)
+        if m: body = m.group(1).strip()
+        else:
+            # Fall back: everything between first <h1> and footer/cta
+            m = re.search(r'(<h1.*?</(?:div|main|body)>)', html, re.IGNORECASE|re.DOTALL)
+            body = m.group(1) if m else ""
+    # Strip any duplicate H1
+    body = re.sub(r'<h1[^>]*>.*?</h1>', '', body, count=1, flags=re.IGNORECASE|re.DOTALL)
+    body = re.sub(r'<h1[^>]*>.*?</h1>', '', body, flags=re.IGNORECASE|re.DOTALL)
+    # Strip nav/back links at bottom
+    body = re.sub(r'<hr\s*/?>\s*<p[^>]*>.*?</p>', '', body, flags=re.IGNORECASE|re.DOTALL)
+    # Remove old CTA blocks
+    body = re.sub(r'<div class="cta-block">.*?</div>', '', body, flags=re.IGNORECASE|re.DOTALL)
+    return body.strip()
+
+def extract_meta(html):
+    m = re.search(r'<meta name="description"[^>]+content="([^"]*)"', html, re.IGNORECASE)
+    return m.group(1) if m else ""
 
 def build_html(title, slug, body, meta_desc):
     canon = f"{SITE_URL}/blog/{slug}.html"
@@ -90,7 +96,6 @@ nav{{background:#0a1a0c;border-bottom:1px solid rgba(201,242,102,0.12);padding:0
 .affiliate-grid{{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}}
 .affiliate-card{{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:12px;text-align:center;text-decoration:none;transition:border-color 0.15s}}
 .affiliate-card:hover{{border-color:#c9f266}}
-.affiliate-card img{{width:48px;height:48px;object-fit:contain;margin-bottom:6px}}
 .affiliate-card span{{display:block;font-size:12px;font-weight:600;color:#374151}}
 .affiliate-card small{{display:block;font-size:11px;color:#94a3b8;margin-top:2px}}
 .back-link{{display:inline-block;margin-top:32px;padding-top:24px;border-top:1px solid #e2e8f0;color:#059669;font-size:14px;font-weight:600;text-decoration:none;width:100%}}
@@ -113,21 +118,20 @@ footer{{background:#0a1a0c;border-top:1px solid rgba(255,255,255,0.06);padding:4
   <div class="nav-links">
     <a href="/blog/" class="nav-link">Blog</a>
     <a href="/states/" class="nav-link">Browse by State</a>
-    <a href="{SITE_URL}" class="nav-link primary">Find a Simulator →</a>
+    <a href="{SITE_URL}" class="nav-link primary">Find a Simulator &#8594;</a>
   </div>
 </nav>
 
 <div class="hero">
   <div class="hero-inner">
-    <div class="hero-eyebrow">IndoorGolfFinders.com · Guide</div>
+    <div class="hero-eyebrow">IndoorGolfFinders.com &middot; Guide</div>
     <h1 class="hero-title">{title}</h1>
-    <p class="hero-meta">By the IndoorGolfFinders Team · {date_str}</p>
+    <p class="hero-meta">By the IndoorGolfFinders Team &middot; {date_str}</p>
   </div>
 </div>
 
 <div class="wrap">
 
-  <!-- Ad: top -->
   <div class="ad-slot">
     <ins class="adsbygoogle" style="display:block;width:100%" data-ad-client="{ADSENSE}" data-ad-slot="{AD_SLOT_TOP}" data-ad-format="auto" data-full-width-responsive="true"></ins>
     <script>(adsbygoogle=window.adsbygoogle||[]).push({{}});</script>
@@ -135,51 +139,47 @@ footer{{background:#0a1a0c;border-top:1px solid rgba(255,255,255,0.06);padding:4
 
   <div class="article-body">{body}</div>
 
-  <!-- Ad: mid -->
   <div class="ad-slot">
     <ins class="adsbygoogle" style="display:block;width:336px;height:280px;margin:0 auto" data-ad-client="{ADSENSE}" data-ad-slot="{AD_SLOT_MID}" data-ad-format="rectangle"></ins>
     <script>(adsbygoogle=window.adsbygoogle||[]).push({{}});</script>
   </div>
 
-  <!-- Affiliate links -->
   <div class="affiliate-box">
     <h4>Shop Golf Simulator Gear</h4>
     <div class="affiliate-grid">
       <a class="affiliate-card" href="https://www.amazon.com/s?k=golf+simulator+mat&tag=indoorgolffi-20" target="_blank" rel="noopener">
-        <span>Simulator Mats</span><small>Shop Amazon →</small>
+        <span>Simulator Mats</span><small>Shop Amazon &#8594;</small>
       </a>
       <a class="affiliate-card" href="https://www.amazon.com/s?k=golf+simulator+screen&tag=indoorgolffi-20" target="_blank" rel="noopener">
-        <span>Impact Screens</span><small>Shop Amazon →</small>
+        <span>Impact Screens</span><small>Shop Amazon &#8594;</small>
       </a>
       <a class="affiliate-card" href="https://www.amazon.com/s?k=skytrak+golf+simulator&tag=indoorgolffi-20" target="_blank" rel="noopener">
-        <span>SkyTrak Units</span><small>Shop Amazon →</small>
+        <span>SkyTrak Units</span><small>Shop Amazon &#8594;</small>
       </a>
       <a class="affiliate-card" href="https://www.amazon.com/s?k=golf+simulator+net&tag=indoorgolffi-20" target="_blank" rel="noopener">
-        <span>Practice Nets</span><small>Shop Amazon →</small>
+        <span>Practice Nets</span><small>Shop Amazon &#8594;</small>
       </a>
       <a class="affiliate-card" href="https://www.amazon.com/s?k=golf+launch+monitor&tag=indoorgolffi-20" target="_blank" rel="noopener">
-        <span>Launch Monitors</span><small>Shop Amazon →</small>
+        <span>Launch Monitors</span><small>Shop Amazon &#8594;</small>
       </a>
       <a class="affiliate-card" href="https://www.amazon.com/s?k=golf+simulator+projector&tag=indoorgolffi-20" target="_blank" rel="noopener">
-        <span>Projectors</span><small>Shop Amazon →</small>
+        <span>Projectors</span><small>Shop Amazon &#8594;</small>
       </a>
     </div>
   </div>
 
-  <!-- CTA -->
   <div class="cta-block">
     <h3>Find a Simulator Near You</h3>
-    <p>Search 2,300+ indoor golf venues across all 46 states — filter by city, brand, and amenities.</p>
-    <a href="{SITE_URL}" class="btn">Find Indoor Golf Near Me →</a>
+    <p>Search 2,300+ indoor golf venues across all 46 states &mdash; filter by city, brand, and amenities.</p>
+    <a href="{SITE_URL}" class="btn">Find Indoor Golf Near Me &#8594;</a>
   </div>
 
-  <!-- Ad: bottom -->
   <div class="ad-slot">
     <ins class="adsbygoogle" style="display:block;width:100%" data-ad-client="{ADSENSE}" data-ad-slot="{AD_SLOT_BOTTOM}" data-ad-format="auto" data-full-width-responsive="true"></ins>
     <script>(adsbygoogle=window.adsbygoogle||[]).push({{}});</script>
   </div>
 
-  <a class="back-link" href="/blog/">← Back to Blog</a>
+  <a class="back-link" href="/blog/">&#8592; Back to Blog</a>
 </div>
 
 <footer>
@@ -222,24 +222,26 @@ footer{{background:#0a1a0c;border-top:1px solid rgba(255,255,255,0.06);padding:4
 </footer>
 </body></html>"""
 
-titles = json.load(open("/tmp/igf-titles.json"))
-print(f"Loaded {len(titles)} IGF titles")
-generated = skipped = errors = 0
+# Run rebuild
+files = [f for f in os.listdir(BLOG_DIR) if f.endswith(".html") and f != "index.html"]
+print(f"Rebuilding {len(files)} posts...")
+rebuilt = errors = 0
 
-for i, post in enumerate(titles):
-    slug = post["slug"]; title = post["title"]; cat = post["category"]
-    path = os.path.join(BLOG_DIR, f"{slug}.html")
-    if os.path.exists(path): skipped += 1; continue
+for i, fname in enumerate(files):
+    path = os.path.join(BLOG_DIR, fname)
+    slug = fname.replace(".html", "")
     try:
-        body = write_post(title, cat)
-        clean = re.sub(r'<[^>]+>','',body)
-        meta = clean.strip()[:155].rsplit(' ',1)[0]+"..."
-        html = build_html(title, slug, body, meta)
-        open(path,"w",encoding="utf-8").write(html)
-        generated += 1
-        print(f"[{i+1}/{len(titles)}] ✓ {slug}.html", flush=True)
+        html = open(path, encoding="utf-8").read()
+        title = extract_title(html)
+        body  = extract_body(html)
+        meta  = extract_meta(html) or title
+        new_html = build_html(title, slug, body, meta)
+        open(path, "w", encoding="utf-8").write(new_html)
+        rebuilt += 1
+        if (i+1) % 50 == 0:
+            print(f"  [{i+1}/{len(files)}] rebuilt...", flush=True)
     except Exception as e:
-        errors += 1; print(f"[{i+1}] ✗ {slug}: {e}", flush=True)
-    time.sleep(0.3)
+        errors += 1
+        print(f"  ERROR {fname}: {e}", flush=True)
 
-print(f"\nDone. Generated:{generated} Skipped:{skipped} Errors:{errors}")
+print(f"\nDone. Rebuilt: {rebuilt} | Errors: {errors}")
