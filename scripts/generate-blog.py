@@ -416,47 +416,56 @@ def content_to_html(raw: str) -> str:
 
 
 def build_prompt(topic: str) -> str:
+    # Load master prompt from file for reference
+    master_prompt_path = os.path.expanduser("~/workspace/blog-prompt.md")
+
     is_city = any(x in topic.lower() for x in ["in ", "near ", "county"])
     city_section = (
         "## The Local Scene\n"
         "Talk about what the sim golf culture is like in that area: weather advantages (year-round play, rain days), "
         "when to go (peak vs off-peak times), and any regional quirks. Keep it specific and genuine. "
-        "Then tell readers to search IndoorGolfFinders.com to find real venues near them.\n\n"
+        "End with one sentence pointing readers to IndoorGolfFinders.com to find real venues near them.\n\n"
     ) if is_city else (
-        "## Where to Find Venues\n"
+        "## Where to Find the Best Options\n"
         "Tell readers that IndoorGolfFinders.com has 2,400+ verified indoor golf venues across the US "
         "and is the easiest way to find one near them. One short paragraph, genuine and direct.\n\n"
     )
 
-    return f"""Write a blog post titled "{topic}" for IndoorGolfFinders.com.
+    return f"""You are an SEO content writer producing blog posts for IndoorGolfFinders.com, a niche golf simulator directory. Write accurate, locally-targeted posts that rank for long-tail keywords and drive organic traffic. Every post must be fact-checked, free of invented names or businesses, and ready to publish.
 
-Use this EXACT structure with these EXACT section headings:
+Site: IndoorGolfFinders.com
+Target keyword: {topic}
+Post type: {"city guide" if is_city else "general topic"}
 
-[2-3 sentence intro] Hook the reader. Why does this topic matter? Local or seasonal angle if it fits. No heading for the intro.
+Write a blog post titled "{topic}" using this EXACT structure:
+
+[Intro — no heading] 2 to 3 sentences. Open with the reader's problem or question. Include the keyword "{topic}" naturally in the first sentence. Local angle if it is a city post.
 
 ## What to Look For
-Cover the real criteria: simulator brands (TrackMan, Full Swing, Foresight GCQuad, SkyTrak, Bushnell Launch Pro), accuracy, course selection, instruction options, food and drink, booking process. Explain what separates a great venue from a mediocre one. Be specific.
+Specific criteria: simulator brands (TrackMan, Full Swing, Foresight GCQuad, SkyTrak, Bushnell Launch Pro), accuracy, course selection, instruction options, food and drink, booking process. What separates a great venue from a mediocre one. Real information only. No invented businesses or venue names.
 
 ## What It Costs
-Give honest price ranges. Typical hourly rates run $30 to $60 per hour depending on location and simulator quality. Mention membership options, day passes, league nights. Tell readers what good value looks like vs. getting ripped off.
+Actual price ranges with numbers. Typical hourly rates run $30 to $60 per hour. Be specific to the region when possible. Mention memberships, day passes, league nights. Tell readers what good value looks like.
 
-## Tips for Getting the Most Out of It
-3 to 5 practical tips a golfer would actually use. Things like: book off-peak for better rates, ask about lesson packages, bring your own glove, check if they offer swing analysis. Advice that feels earned, not generic.
+## Tips to Get the Most Out of It
+3 to 5 practical, actionable tips a real golfer would use. Things like: book off-peak for better rates, ask about lesson packages, bring your own glove, check if they offer swing analysis. Advice that feels earned, not generic.
 
 {city_section}
-ABSOLUTE RULES — breaking any of these makes the post unusable:
-- 600 to 800 words total
-- DO NOT name any specific venue, business, club, bar, or location. Not even real ones. Not TopGolf, not GolfTEC, not any named place. Zero venue names, ever.
-- DO NOT create "Top Picks", "Best Options", "High-End Options" or any section that lists or recommends specific places.
-- Instead give readers the CRITERIA to evaluate any venue themselves. That is the job of this post.
-- Only real simulator brand names allowed as examples: TrackMan, Full Swing, Foresight GCQuad, SkyTrak, Bushnell Launch Pro
-- Write in second person (you, your). No first person (I, we).
-- No em dashes. No hyphens in prose. Use "to" for ranges (e.g. "30 to 60 dollars").
-- No HTML tags. No title heading at the top.
-- Sound like a knowledgeable golfer giving honest advice to a friend, not a directory listing.
-- End with one sentence pointing to IndoorGolfFinders.com as the place to find real venues.
+QUALITY RULES — every one must pass before you output the post:
+- Keyword "{topic}" appears in the first sentence? If not, fix it.
+- Any invented venue names, business names, or specific locations mentioned? If yes, remove them all.
+- Word count between 550 and 800? If not, adjust.
+- Any em dashes (—) present? If yes, replace with a comma or rewrite the sentence.
+- Does it read like a knowledgeable golfer talking to a friend, not a bot writing for SEO? If not, rewrite.
 
-Write the full post now:"""
+Additional rules:
+- Second person (you, your) throughout. No first person.
+- Only these simulator brands allowed by name: TrackMan, Full Swing, Foresight GCQuad, SkyTrak, Bushnell Launch Pro
+- No HTML tags in output. No title heading at the top (we add that separately).
+- Short paragraphs. Plain language. No jargon.
+- End the post with exactly one CTA sentence pointing to IndoorGolfFinders.com.
+
+Write the full post now, starting with the intro paragraph (no heading):"""
 
 
 def build_index_html(posts: list) -> str:
