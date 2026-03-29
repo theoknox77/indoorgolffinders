@@ -277,7 +277,7 @@ article a:hover {{ color: #0c1f0e; }}
 .inline-ad {{ background: #f9f9f9; border: 1px dashed #ddd; border-radius: 10px; text-align: center; padding: 22px; font-size: 11px; color: #ccc; margin: 28px 0; text-transform: uppercase; letter-spacing: 0.5px; }}
 .cta-box {{ background: linear-gradient(135deg, #0c1f0e 0%, #1a3d1e 100%); color: #fff; border-radius: 14px; padding: 32px 36px; text-align: center; margin: 40px 0; }}
 .cta-box h3 {{ font-size: 22px; font-weight: 900; margin-bottom: 8px; }}
-.cta-box p {{ font-size: 15px; opacity: 0.8; margin-bottom: 22px; }}
+.cta-box p {{ font-size: 15px; color: #e8f5d0; margin-bottom: 22px; }}
 .cta-btn {{ background: #c9f266; color: #0c1f0e; border: none; padding: 13px 28px; font-size: 15px; font-weight: 800; border-radius: 8px; cursor: pointer; display: inline-block; text-decoration: none !important; }}
 .breadcrumb {{ font-size: 13px; color: #888; max-width: 760px; margin: 0 auto; padding: 14px 20px 0; }}
 .breadcrumb a {{ color: #2a6e1e; }}
