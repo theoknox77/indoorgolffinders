@@ -82,7 +82,7 @@ footer a { color: #c9f266; }
 }"""
 
 HEADER = """<header class="site-header" style="position:relative">
-  <a href="/" class="logo" style="text-decoration:none">⛳ Sim<span class="accent">Find</span></a>
+  <a href="/" class="logo" style="text-decoration:none">⛳ IndoorGolf<span class="accent">Finders</span></a>
   <nav class="nav-links" id="main-nav">
     <a href="/">Find a Sim</a>
     <a href="/brands">Simulator Brands</a>
@@ -96,7 +96,7 @@ HEADER = """<header class="site-header" style="position:relative">
 </header>"""
 
 FOOTER = """<footer>
-  <div class="footer-logo">⛳ SimFind by IndoorGolfFinders.com</div>
+  <div class="footer-logo">⛳ IndoorGolfFinders.com</div>
   <div class="footer-links">
     <a href="/">Home</a>
     <a href="/about">About</a>
@@ -106,7 +106,7 @@ FOOTER = """<footer>
     <a href="/leagues">Leagues</a>
     <a href="/privacy">Privacy</a>
   </div>
-  <p>© 2026 SimFind — IndoorGolfFinders.com · The most detailed indoor golf simulator directory in the US</p>
+  <p>© 2026 IndoorGolfFinders.com · The most detailed indoor golf simulator directory in the US</p>
 </footer>"""
 
 GA_ADSENSE = """<link rel="preconnect" href="https://pagead2.googlesyndication.com">
@@ -124,6 +124,27 @@ GA_ADSENSE = """<link rel="preconnect" href="https://pagead2.googlesyndication.c
 def get_city_display_name(slug):
     """Convert city slug to display name."""
     return slug.replace('-', ' ').title()
+
+
+def is_address_city_slug(slug):
+    """Return True if slug looks like a street address, not a real city."""
+    import re
+    ADDRESS_RE = re.compile(
+        r'^(\d)'
+        r'|(-rd$|-rd-|-ave$|-ave-|-blvd$|-blvd-)'
+        r'|(-ln$|-ln-)'
+        r'|(frontage)'
+        r'|(hum-rd)'
+        r'|(bunker-hill-rd)'
+        r'|(^suite-|^unit-|^ste-)'
+        r'|(suite$|unit$)'
+        r'|(-pkwy$|-pkwy-)'
+        r'|(-\d{5}$)'
+        r'|(ky-\d|tx-\d|fl-\d|nm-\d)'
+        r'|(-bldg-)'
+        r'|(-floor-)'
+    )
+    return bool(ADDRESS_RE.search(slug))
 
 def get_state_data(state_code):
     """Count venues and cities for a state."""
@@ -145,7 +166,8 @@ def get_state_data(state_code):
             content = f.read(500)
         title_m = re.search(r'<title>([^<]+)</title>', content)
         if title_m and 'Golf Simulators in' in title_m.group(1):
-            cities.append(entry)
+            if not is_address_city_slug(entry):
+                cities.append(entry)
         else:
             venue_count += 1
 
@@ -156,6 +178,10 @@ def generate_state_page(state_code, state_name, venue_count, city_count, cities)
     state_upper = state_code.upper()
     url = f"https://indoorgolffinders.com/states/{state_code}"
 
+    # Pluralization helpers
+    venue_word = "venue" if venue_count == 1 else "venues"
+    city_word = "city" if city_count == 1 else "cities"
+
     # Build city grid
     city_links = ""
     for city_slug in sorted(cities):
@@ -164,10 +190,10 @@ def generate_state_page(state_code, state_name, venue_count, city_count, cities)
 
     # FAQ questions for the state
     faq_q1 = f"How many indoor golf simulator venues are in {state_name}?"
-    faq_a1 = f"SimFind lists {venue_count} indoor golf simulator venues across {state_name}. These span {city_count} cities and include dedicated golf bays, simulator bars, golf lounges, and training facilities."
+    faq_a1 = f"IndoorGolfFinders lists {venue_count} indoor golf simulator {venue_word} across {state_name}. These span {city_count} {city_word} and include dedicated golf bays, simulator bars, golf lounges, and training facilities."
 
     faq_q2 = f"What are the most popular golf simulator brands in {state_name}?"
-    faq_a2 = f"The most common commercial golf simulator brands found in {state_name} venues include TrackMan, Full Swing, Foresight GCQuad, SkyTrak, and X-Golf. Availability varies by venue — check individual listings on SimFind for confirmed simulator brand information."
+    faq_a2 = f"The most common commercial golf simulator brands found in {state_name} venues include TrackMan, Full Swing, Foresight GCQuad, SkyTrak, and X-Golf. Availability varies by venue — check individual listings on IndoorGolfFinders for confirmed simulator brand information."
 
     faq_q3 = f"How much does it cost to use a golf simulator in {state_name}?"
     faq_a3 = f"Golf simulator rentals in {state_name} typically range from $25 to $60 per hour per bay. Many venues offer membership plans for frequent players. Prices vary by simulator brand, time of day, and specific location."
@@ -187,7 +213,7 @@ def generate_state_page(state_code, state_name, venue_count, city_count, cities)
         "@context": "https://schema.org",
         "@type": "Dataset",
         "name": f"Golf Simulator Venues in {state_name}",
-        "description": f"A dataset of {venue_count} indoor golf simulator venues in {state_name}, including location, simulator brand, pricing, and amenity data.",
+        "description": f"A dataset of {venue_count} indoor golf simulator {venue_word} in {state_name}, including location, simulator brand, pricing, and amenity data.",
         "url": url,
         "creator": {
             "@type": "Organization",
@@ -211,15 +237,15 @@ def generate_state_page(state_code, state_name, venue_count, city_count, cities)
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Golf Simulators in {state_name} | SimFind — {venue_count} Venues</title>
-<meta name="description" content="Find {venue_count} indoor golf simulator venues across {city_count} cities in {state_name}. Compare simulator brands, pricing, and amenities at SimFind.">
+<title>Golf Simulators in {state_name} | {venue_count} Venues</title>
+<meta name="description" content="Find {venue_count} indoor golf simulator {venue_word} across {city_count} {city_word} in {state_name}. Compare simulator brands, pricing, and amenities at IndoorGolfFinders.">
 <meta http-equiv="X-Content-Type-Options" content="nosniff">
 <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
 <meta name="robots" content="index,follow">
 <meta name="google-site-verification" content="OwYaI_vjheyUrXkuilQ4zMuTZ-ufeS139zT0FQqV2s4">
 <link rel="canonical" href="{url}">
-<meta property="og:title" content="Golf Simulators in {state_name} | SimFind — {venue_count} Venues">
-<meta property="og:description" content="Find {venue_count} indoor golf simulator venues across {state_name}. Compare simulator brands, pricing, and amenities.">
+<meta property="og:title" content="Golf Simulators in {state_name} | {venue_count} Venues">
+<meta property="og:description" content="Find {venue_count} indoor golf simulator {venue_word} across {state_name}. Compare simulator brands, pricing, and amenities.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="{url}">
 <meta property="og:image" content="https://indoorgolffinders.com/images/og-image.jpg">
@@ -242,7 +268,7 @@ def generate_state_page(state_code, state_name, venue_count, city_count, cities)
   <div class="breadcrumb"><a href="/">Home</a><span>›</span><a href="/states/">States</a><span>›</span>{state_name}</div>
 
   <h1 style="font-size:36px;font-weight:900;color:#0c1f0e;margin:24px 0 8px;letter-spacing:-0.5px">Golf Simulators in {state_name}</h1>
-  <p style="font-size:16px;color:#555;margin-bottom:24px">{venue_count} indoor golf simulator venues across {city_count} cities in {state_name}. Find the right simulator for your game.</p>
+  <p style="font-size:16px;color:#555;margin-bottom:24px">{venue_count} indoor golf simulator {venue_word} across {city_count} {city_word} in {state_name}. Find the right simulator for your game.</p>
 
   <div class="stats-bar">
     <div class="stat-item">
@@ -269,7 +295,7 @@ def generate_state_page(state_code, state_name, venue_count, city_count, cities)
 
   <div class="section-header" style="margin-top:32px">
     <h2>Browse by City</h2>
-    <span class="section-meta">{city_count} cities</span>
+    <span class="section-meta">{city_count} {city_word}</span>
   </div>
   <div class="city-grid">
 {city_links}  </div>
@@ -331,8 +357,8 @@ def generate_states_index(all_states_data):
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Golf Simulators by State | SimFind — {total_venues}+ Venues Nationwide</title>
-<meta name="description" content="Browse indoor golf simulator venues by state. SimFind lists {total_venues}+ venues across 46 states with simulator brand, pricing, and amenity data.">
+<title>Golf Simulators by State | {total_venues}+ Venues Nationwide</title>
+<meta name="description" content="Browse indoor golf simulator venues by state. IndoorGolfFinders lists {total_venues}+ venues across 46 states with simulator brand, pricing, and amenity data.">
 <meta http-equiv="X-Content-Type-Options" content="nosniff">
 <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
 <meta name="robots" content="index,follow">
@@ -406,7 +432,7 @@ for state_code, state_name in sorted(STATE_NAMES.items()):
         f.write(html)
 
     pages_created += 1
-    print(f"  Created /states/{state_code}/ — {venue_count} venues, {city_count} cities")
+    print(f"  Created /states/{state_code}/ — {venue_count} venues, {city_count} {'city' if city_count == 1 else 'cities'}")
 
 # Generate /states/index.html
 index_html = generate_states_index(all_states_data)

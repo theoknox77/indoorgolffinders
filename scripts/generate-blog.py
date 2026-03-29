@@ -129,6 +129,36 @@ TOPICS = [
     "Indoor Golf Swing Speed Drills",
     "Indoor Golf Balance Drills",
     "Indoor Golf Tempo Drills",
+    "Indoor Golf Simulator Pricing Guide 2026",
+    "TrackMan Golf Simulator Locations Near Me",
+    "Full Swing Golf Simulator Venues Guide",
+    "Foresight GCQuad Simulator Golf Centers",
+    "Indoor Golf Birthday Party Booking Guide",
+    "Corporate Golf Simulator Team Events",
+    "Indoor Golf Date Night Ideas and Venues",
+    "Golf Simulator vs Driving Range Which Is Better",
+    "Best Golf Simulator Bars with Food and Drinks",
+    "Indoor Golf for Beginners Complete Guide",
+    "Golf Simulator Membership Near Me",
+    "Indoor Golf Leagues for Adults Near Me",
+    "Golf Simulator Happy Hour Specials",
+    "Best Simulators for Golf Practice at Home",
+    "Indoor Golf Facilities with Lessons",
+    "Golf Simulator Rental by the Hour Near Me",
+    "Golf Simulator Venues with Private Bays",
+    "Best Indoor Golf for Families Near Me",
+    "Golf Simulator Night Out Ideas",
+    "How to Book a Golf Simulator Online",
+    "Golf Simulator Venues Open Late Near Me",
+    "Indoor Golf Centers with Food and Bar",
+    "Golf Simulator Venues with Trackman Technology",
+    "Affordable Indoor Golf Simulators Near Me",
+    "Golf Simulator Venues for Groups and Parties",
+    "Indoor Golf Simulator Reviews and Ratings",
+    "Golf Simulator Venues in Florida",
+    "Golf Simulator Venues in Texas",
+    "Golf Simulator Venues in California",
+    "Golf Simulator Venues in New York",
 ]
 
 
@@ -165,8 +195,39 @@ def make_excerpt(topic: str) -> str:
     return f"Everything you need to know about {topic.lower()}, including how to find the best venues near you."
 
 
-def build_post_html(topic: str, slug: str, body_html: str, description: str) -> str:
+
+def generate_hero_image(topic, slug, output_dir, prompt_prefix=""):
+    """Generate a hero image for a blog post via HuggingFace FLUX.1 Schnell. Returns filename or None."""
+    import urllib.request, os, hashlib
+    out_path = os.path.join(output_dir, f"{slug}-hero.png")
+    if os.path.exists(out_path):
+        return f"{slug}-hero.png"
+    try:
+        # Build prompt from topic
+        keywords = topic[:80].replace('"', '').replace("'", '')
+        prompt = f"{prompt_prefix}{keywords}, smiling at camera, professional photography, photorealistic, high quality"[:200]
+        url = "https://router.huggingface.co/hf-inference/models/black-forest-labs/FLUX.1-schnell"
+        import json
+        payload = json.dumps({"inputs": prompt, "parameters": {"width": 1024, "height": 576}}).encode()
+        req = urllib.request.Request(url, data=payload, headers={
+            "Authorization": f"Bearer {os.environ.get('HF_API_TOKEN', '')}",
+            "Content-Type": "application/json",
+            "Accept": "image/png"
+        })
+        with urllib.request.urlopen(req, timeout=60) as r:
+            img_bytes = r.read()
+        with open(out_path, "wb") as f:
+            f.write(img_bytes)
+        print(f"  [imggen] Hero image saved: {out_path}")
+        return f"{slug}-hero.png"
+    except Exception as e:
+        print(f"  [imggen] Skipping hero image (error: {e})")
+        return None
+
+def build_post_html(topic: str, slug: str, body_html: str, description: str, output_dir: str = None) -> str:
     canonical = f"{SITE_URL}/blog/{slug}.html"
+    hero_img = generate_hero_image(topic, slug, output_dir or "/Users/theoknox/workspace/golf-sim/blog", "indoor golf simulator venue, ") if True else None
+    hero_img_tag = f'<img src="{slug}-hero.png" alt="{topic}" style="width:100%;max-height:420px;object-fit:cover;border-radius:12px;margin:20px 0 28px;">' if hero_img else ""
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -179,6 +240,7 @@ def build_post_html(topic: str, slug: str, body_html: str, description: str) -> 
 <meta property="og:title" content="{topic} | IndoorGolfFinders.com">
 <meta property="og:description" content="{description}">
 <meta property="og:type" content="article">
+<meta property="og:image" content="{SITE_URL}/blog/{slug}-hero.png">
 <meta property="og:url" content="{canonical}">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-{ADSENSE_PUB}" crossorigin="anonymous"></script>
 <!-- Google tag (gtag.js) -->
@@ -262,7 +324,7 @@ footer a {{ color: #c9f266; }}
 <article>
   <h1>{topic}</h1>
   <p class="meta">Published by IndoorGolfFinders.com &bull; Indoor Golf Guides</p>
-
+{{hero_img_tag}}
 {body_html}
 
   <div class="inline-ad-wrap">
@@ -591,4 +653,14 @@ def main():
 
 
 if __name__ == "__main__":
+    "Indoor Golf Simulator Pricing Guide 2026",
+    "TrackMan Golf Simulator Near Me",
+    "Full Swing Golf Simulator Locations",
+    "Foresight GCQuad Simulator Venues",
+    "Indoor Golf Birthday Party Ideas",
+    "Corporate Golf Simulator Events",
+    "Indoor Golf Date Night Ideas",
+    "Golf Simulator vs Driving Range Comparison",
+    "Best Golf Simulator Bars with Food and Drinks",
+    "Indoor Golf for Beginners Complete Guide",
     main()
