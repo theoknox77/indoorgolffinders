@@ -1,1 +1,4 @@
 .vercel
+scripts/enrich-city-haiku.py
+scripts/enrich-city-pages-parallel.py
+scripts/enrich-city-pages.py

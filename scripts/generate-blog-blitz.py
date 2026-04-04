@@ -33,7 +33,7 @@ Rules:
 - Practical, useful info a real golfer would value.
 
 Output: clean HTML body only. Use <h2>, <p>, <ul><li>, <strong> only. No inline styles."""
-    msg = client.messages.create(model="claude-haiku-4-5", max_tokens=1200,
+    msg = client.messages.create(model="gemma4:e4b", max_tokens=1200,
         messages=[{"role":"user","content":prompt}])
     return msg.content[0].text
 
